@@ -50,19 +50,20 @@ public class Screen2Controller implements Initializable, ControlledScreen {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        Continent ct = new Continent();
-        
 
-        Continent ct = new Continent();
-        
+        Continent ct2 = new Continent();
+        Continent ct3 = new Continent();
+        Continent ct4 = new Continent();
+        Continent ct5 = new Continent();
+        Continent ct6 = new Continent();
+
         Country country = new Country();
-        
+
         Continent na = new Continent();
         na.setId(1);
         na.setName("America do Norte");
         continents.add(na);
-        
+
         Continent eu = new Continent();
         eu.setId(3);
         eu.setName("Europa");
@@ -89,7 +90,7 @@ public class Screen2Controller implements Initializable, ControlledScreen {
         //Listener that observes the Continent Choice Box.
         //If it is changed, it will change the Country Choice Box too
         cbContinent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Continent>() {
-            
+
             @Override
             public void changed(ObservableValue<? extends Continent> ov, Continent t, Continent t1) {
                 countriesByContinent.clear();
