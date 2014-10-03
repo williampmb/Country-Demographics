@@ -51,7 +51,7 @@ public class Screen2Controller implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        System.out.println("maybe I will punch Daniel for talking in portuguesa too much");
+       
                 
         Continent na = new Continent();
         na.setId(1);
