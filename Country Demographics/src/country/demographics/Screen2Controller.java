@@ -50,6 +50,9 @@ public class Screen2Controller implements Initializable, ControlledScreen {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        Continent ct = new Continent();
+        
 
         Continent ct = new Continent();
         
