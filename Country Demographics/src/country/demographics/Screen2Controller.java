@@ -51,6 +51,10 @@ public class Screen2Controller implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        Continent ct = new Continent();
+        
+        Country country = new Country();
+        
         Continent na = new Continent();
         na.setId(1);
         na.setName("America do Norte");

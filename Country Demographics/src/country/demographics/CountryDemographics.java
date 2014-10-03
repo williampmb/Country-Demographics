@@ -38,6 +38,8 @@ public class CountryDemographics extends Application {
         
         mainContainer.setScreen(CountryDemographics.screen1ID);
              
+        
+             
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
