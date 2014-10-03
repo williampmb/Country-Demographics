@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="497.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.Screen2Controller">
+  <children>
+    <BorderPane prefHeight="376.0" prefWidth="497.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+      <center>
+        <SplitPane dividerPositions="0.501010101010101" focusTraversable="true" prefHeight="405.0" prefWidth="497.0">
+          <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+              <children>
+                <ComboBox fx:id="cbContinent" layoutX="32.0" layoutY="67.0" prefHeight="21.0" prefWidth="182.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ComboBox fx:id="cbCountry" layoutX="32.0" layoutY="165.0" prefHeight="21.0" prefWidth="182.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ImageView fx:id="ivFlag" fitHeight="128.0" fitWidth="128.0" layoutX="59.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true" />
+              </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="-1.0" prefWidth="-1.0">
+              <children>
+                <ScrollPane fitToHeight="false" fitToWidth="false" hbarPolicy="NEVER" prefHeight="378.0" prefWidth="244.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="-1.0" prefWidth="-1.0">
+                      <children>
+                        <VBox alignment="TOP_LEFT" prefHeight="376.0" prefWidth="244.0" spacing="30.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="-1.0">
+                          <children>
+                            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
+                              <children>
+                                <Label prefHeight="21.0" prefWidth="100.0" text="Polulation: " />
+                                <Label prefHeight="21.0" prefWidth="37.0" text="" />
+                                <Label fx:id="populacao" prefHeight="21.0" prefWidth="100.0" text="202,656,788" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
+                              <children>
+                                <Label prefHeight="21.0" prefWidth="100.0" text="Area:" />
+                                <Label prefHeight="21.0" prefWidth="37.0" text="" />
+                                <Label prefHeight="21.0" prefWidth="100.0" text="8,515,767 km2" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
+                              <children>
+                                <Label prefHeight="21.0" prefWidth="100.0" text="Official Language:" />
+                                <Label prefHeight="21.0" prefWidth="37.0" text="" />
+                                <Label prefHeight="21.0" prefWidth="100.0" text="" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
+                              <children>
+                                <Label prefHeight="21.0001220703125" prefWidth="98.0" text="Time Zone:" />
+                                <Label prefHeight="21.0" prefWidth="37.0" text="" />
+                                <Label prefHeight="21.0" prefWidth="100.0" text=".br" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
+                              <children>
+                                <Label prefHeight="21.0" prefWidth="100.0" text="Currency:" />
+                                <Label prefHeight="21.0" prefWidth="37.0" text="" />
+                                <Label id="populacao" prefHeight="21.0" prefWidth="100.0" text="202,656,788" />
+                              </children>
+                            </HBox>
+                          </children>
+                          <padding>
+                            <Insets left="10.0" top="10.0" />
+                          </padding>
+                        </VBox>
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </ScrollPane>
+              </children>
+            </AnchorPane>
+          </items>
+        </SplitPane>
+      </center>
+    </BorderPane>
+    <MenuBar prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <menus>
+        <Menu mnemonicParsing="false" text="File" fx:id="item">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#exitProgram" text="Close" visible="true" fx:id="closemenu" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Delete" visible="true" />
+            <MenuItem mnemonicParsing="false" text="Delete" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </children>
+</AnchorPane>
