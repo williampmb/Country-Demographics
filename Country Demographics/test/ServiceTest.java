@@ -1,3 +1,4 @@
+import country.demographics.forms.Continent;
 import country.demographics.forms.Country;
 import country.demographics.forms.User;
 import country.demographics.service.Service;
@@ -34,7 +35,10 @@ public class ServiceTest {
      */
     @Test
     public void test_getContinents() {
-        assertNotNull(service.getContinents());
+        
+        List<Continent> continents = service.getContinents();
+        
+        assertNotNull(continents);
     }
 
     /**
@@ -43,7 +47,6 @@ public class ServiceTest {
     @Test
     public void test_getCountriesByContinentId() {
         List<Country> countries = service.getCountriesByContinentId(1);
-        System.out.println(countries.get(0).toString());
     }
     
     @Test

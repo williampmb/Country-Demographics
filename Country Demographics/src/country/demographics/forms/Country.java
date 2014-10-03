@@ -18,9 +18,9 @@ public class Country {
     private String currency;
     private String tld;
     private int continentId;
-    private Image flag;
+    private String flag;
 
-    public Image getFlag() {
+    public String getFlag() {
         return flag;
     }
 
@@ -28,7 +28,7 @@ public class Country {
         return id;
     }
 
-    public void setFlag(Image flag) {
+    public void setFlag(String flag) {
         this.flag = flag;
     }
 

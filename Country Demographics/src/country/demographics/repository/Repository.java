@@ -5,6 +5,7 @@
  */
 package country.demographics.repository;
 
+import com.mysql.jdbc.StringUtils;
 import country.demographics.forms.Continent;
 import country.demographics.forms.Country;
 import country.demographics.forms.User;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -56,10 +58,10 @@ public class Repository {
 
     public List<Continent> getContinents() {
         List<Continent> continents = new ArrayList<>();
-        
+
         try {
             Statement statement = connection.createStatement();
-            
+
             String sql = "SELECT * FROM continents";
 
             ResultSet result = statement.executeQuery(sql);
@@ -74,28 +76,28 @@ public class Repository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return continents;
     }
-    
+
     public List<Country> getCountriesByContinentId(final int continentId) {
         List<Country> countryList = new ArrayList<>();
-        
+
         String sql = "SELECT * FROM countries WHERE cont_id=1";
-        
+
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
 
             //statement.setInt(1, continentId);
-
             ResultSet resultSet = statement.executeQuery();
-            
-            while(resultSet.next()) {
+
+            while (resultSet.next()) {
                 Country country = new Country();
                 country.setArea(resultSet.getInt("count_area"));
                 country.setContinentId(resultSet.getInt("cont_id"));
                 country.setCurrency(resultSet.getString("count_currency"));
                 country.setId(resultSet.getInt("count_id"));
+                country.setFlag(this.getFlagByCountryId(country.getId()));
                 country.setName(resultSet.getString("count_name"));
                 country.setOfficialLanguage(resultSet.getString("count_language"));
                 country.setPopulation(resultSet.getInt("count_pop"));
@@ -105,22 +107,46 @@ public class Repository {
             }
 
         } catch (SQLException e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
-        
+
         return countryList;
     }
-    
+
+    public String getFlagByCountryId(final int countryId) {
+        String sql = "SELECT flag_path FROM flags INNER JOIN countries "
+                + "WHERE flags.flag_id = countries.flag_id AND countries.count_id = ?";
+        
+        String path = null;
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            statement.setInt(1, countryId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                path = resultSet.getString("flag_path");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return path;
+    }
+
     public boolean insertCountry(final Country country) {
         String sql = "INSERT INTO countries (count_name, count_pop, count_area, "
                 + "count_language, count_timezone, count_currency, count_tld, cont_id) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        
+
         int result = 0;
-        
-        try {             
+
+        try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            
+
             statement.setString(1, country.getName());
             statement.setLong(2, country.getPopulation());
             statement.setInt(3, country.getArea());
@@ -131,42 +157,40 @@ public class Repository {
             statement.setInt(8, country.getContinentId());
 
             result = statement.executeUpdate();
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
-        
-        return  result > 0;
+
+        return result > 0;
     }
-    
+
     public User validatateUser(final User form) {
         User user = null;
         String sql = "SELECT uid, username, user_type FROM users WHERE BINARY username=? and BINARY password=? LIMIT 0, 1";
-        
-        try { 
+
+        try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            
+
             statement.setString(1, form.getUsername());
             statement.setString(2, form.getPassword());
 
             ResultSet resultSet = statement.executeQuery();
-            
+
             while(resultSet.next()) {
                 user = new User();
                 user.setUserId(resultSet.getInt("uid"));
                 user.setUsername(resultSet.getString("username"));
                 user.setUserType(resultSet.getInt("user_type"));
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
-        
-        
+
         return user;
     }
-    
-    
+
 }
