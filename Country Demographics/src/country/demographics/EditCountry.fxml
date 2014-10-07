@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="481.0000999999975" prefWidth="322.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.EditCountry">
+  <children>
+    <Pane prefHeight="200.0" prefWidth="315.0" AnchorPane.bottomAnchor="5.02" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.02">
+      <children>
+        <Label layoutX="20.0" layoutY="55.0" text="Edit Country">
+          <font>
+            <Font name="Times New Roman Bold" size="25.0" />
+          </font>
+        </Label>
+        <TextField id="txtContinent" fx:id="txtCountry" layoutX="67.0" layoutY="122.0" prefWidth="186.0" promptText="Name" />
+        <ChoiceBox fx:id="cbContinent" layoutX="185.0" layoutY="34.0" prefWidth="123.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ChoiceBox>
+        <HBox alignment="CENTER_RIGHT" layoutX="29.0" layoutY="417.0" prefHeight="50.0" prefWidth="251.0" spacing="20.0">
+          <children>
+            <Button id="btnNew" mnemonicParsing="false" text="New" />
+            <Button id="btnBack" mnemonicParsing="false" text="Save" />
+            <Button mnemonicParsing="false" text="Delete" />
+            <Button id="btnSave" mnemonicParsing="false" onAction="#toGoScreen2" text="Back" />
+          </children>
+          <padding>
+            <Insets />
+          </padding>
+        </HBox>
+        <ChoiceBox id="cbContinent" fx:id="cbCountry" layoutX="185.0" layoutY="73.0" prefWidth="123.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ChoiceBox>
+        <VBox layoutX="27.0" layoutY="160.0" prefHeight="253.0" prefWidth="127.5" spacing="15.0">
+          <children>
+            <TextField prefWidth="113.0" promptText="Population" />
+            <TextField prefWidth="113.0" promptText="Population" />
+            <TextField prefWidth="113.0" promptText="Area" />
+            <TextField prefWidth="113.0" promptText="Oficial Language" />
+            <TextField prefWidth="113.0" promptText="Time Zone" />
+            <TextField prefWidth="113.0" promptText="Currency" />
+            <TextField prefWidth="113.0" promptText="TLD" />
+            <TextField prefWidth="113.0" promptText="Path Flag" />
+          </children>
+        </VBox>
+        <ImageView fitHeight="128.0" fitWidth="128.0" layoutX="171.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true" />
+        <Button layoutX="206.0" layoutY="321.0" mnemonicParsing="false" onAction="#browseFlag" text="Browse" />
+      </children>
+    </Pane>
+  </children>
+</AnchorPane>

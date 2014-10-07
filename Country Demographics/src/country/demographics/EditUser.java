@@ -6,6 +6,7 @@
 package country.demographics;
 
 import country.demographics.forms.Continent;
+import country.demographics.forms.User;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,8 +18,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
@@ -26,26 +29,26 @@ import javafx.scene.control.TextField;
  *
  * @author williampmb
  */
-public class EditContinent implements Initializable, ControlledScreen {
+public class EditUser implements Initializable, ControlledScreen {
 
     ScreensController myController;
 
-    ObservableList<Continent> continents = FXCollections.observableArrayList();
+    ObservableList<User> users = FXCollections.observableArrayList();
 
     @FXML
-    ChoiceBox cbContinent;
+    ChoiceBox cbUser;
 
     @FXML
-    TextField txtContinent;
+    TextField txtLogin;
+
+    @FXML
+    PasswordField pfPassword;
+
+    @FXML
+    CheckBox cebLvlUser;
 
     Continent currentContinent = null;
 
-  //  @FXML
-    //  Button btnBack;
-    // @FXML
-    // Button btnSave;
-    // @FXML
-    //  Button btnNew;
     int count = 0;
 
     /**
@@ -53,22 +56,28 @@ public class EditContinent implements Initializable, ControlledScreen {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        List<Continent> continentsList = CountryDemographics.service.getContinents();
+        List<User> userList = CountryDemographics.service.getUsers();
 
-        for (Continent c : continentsList) {
-            continents.add(c);
+        for (User c : userList) {
+            users.add(c);
         }
 
-        cbContinent.setItems(continents);
+        cbUser.setItems(users);
 
         //Listener that observes the Continent Choice Box.
         //If it is changed, it will change the Country Choice Box too
-        cbContinent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Continent>() {
+        cbUser.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
 
             @Override
-            public void changed(ObservableValue<? extends Continent> ov, Continent t, Continent t1) {
-                currentContinent = t1;
-                txtContinent.setText(t1.getName());
+            public void changed(ObservableValue<? extends User> ov, User t, User t1) {
+                txtLogin.setText(t1.getUsername());
+                if (t1.getUserType() == 1) {
+                    cebLvlUser.setSelected(true);
+
+                } else {
+                    cebLvlUser.setSelected(false);
+
+                }
             }
         });
 
@@ -87,8 +96,6 @@ public class EditContinent implements Initializable, ControlledScreen {
         CountryDemographics.stage.setHeight(400);
     }
 
-    
-
     @FXML
     public void saveChanges(ActionEvent e) {
         // pegar o continente Current Continent e alterar o nome para 
@@ -97,7 +104,7 @@ public class EditContinent implements Initializable, ControlledScreen {
 
     @FXML
     public void newContinent(ActionEvent e) {
-        
+
         Continent nCont = new Continent();
 
     }

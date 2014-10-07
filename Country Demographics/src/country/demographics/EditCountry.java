@@ -7,9 +7,7 @@ package country.demographics;
 
 import country.demographics.forms.Continent;
 import country.demographics.forms.Country;
-import country.demographics.forms.User;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -19,34 +17,41 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
  *
  * @author williampmb
  */
-public class Screen2Controller implements Initializable, ControlledScreen {
+public class EditCountry implements Initializable, ControlledScreen {
 
     ScreensController myController;
 
-    @FXML
-    MenuItem closemenu;
-    @FXML
-    Menu item;
     ObservableList<Country> countries = FXCollections.observableArrayList();
+
+    @FXML
+    ChoiceBox cbCountry;
+    @FXML
+    ChoiceBox cbContinent;
+
+    @FXML
+    TextField txtCountry;
+
+    Country currentCountry = null;
+
     ObservableList<Country> countriesByContinentIdObservable = FXCollections.observableArrayList();
     ObservableList<Continent> continents = FXCollections.observableArrayList();
-    @FXML
-    ComboBox cbCountry;
-    @FXML
-    ComboBox cbContinent;
-    @FXML
-    ImageView ivFlag;
+
+    //  @FXML
+    //  Button btnBack;
+    // @FXML
+    // Button btnSave;
+    // @FXML
+    //  Button btnNew;
     int count = 0;
 
     /**
@@ -63,7 +68,6 @@ public class Screen2Controller implements Initializable, ControlledScreen {
 
         cbContinent.setItems(continents);
 
-       
         cbContinent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Continent>() {
 
             @Override
@@ -90,20 +94,13 @@ public class Screen2Controller implements Initializable, ControlledScreen {
             }
         });
 
-        // Listener that change the flag when the selected country is changed. 
-        //If selected country is null, it sets ImageView not visible.
+        //Listener that observes the Continent Choice Box.
         cbCountry.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
 
             @Override
             public void changed(ObservableValue<? extends Country> ov, Country t, Country t1) {
-
-                if (t1 == null) {
-                    ivFlag.setVisible(false);
-                } else {
-                    ivFlag.setVisible(true);
-                    ivFlag.setImage(new Image(t1.getFlag()));
-
-                }
+                currentCountry = t1;
+                txtCountry.setText(t1.getName());
             }
         });
 
@@ -116,24 +113,32 @@ public class Screen2Controller implements Initializable, ControlledScreen {
     }
 
     @FXML
-    public void exitProgram() {
-        System.exit(0);
-    }
-
-    @FXML
-    public void toGoEditContinent(ActionEvent e) {
-        myController.setScreen(CountryDemographics.screen3ID);
-        CountryDemographics.stage.setWidth(311 + 10);
-        CountryDemographics.stage.setHeight(200);
-
+    public void toGoScreen2(ActionEvent e) {
+        myController.setScreen(CountryDemographics.screen2ID);
+        CountryDemographics.stage.setWidth(497 + 10);
+        CountryDemographics.stage.setHeight(400);
     }
     
-    @FXML
-    public void toGoEditCountry(ActionEvent e) {
-        myController.setScreen(CountryDemographics.screen4ID);
-        CountryDemographics.stage.setWidth(330 + 10);
-        CountryDemographics.stage.setHeight(500+ 5 );
+     @FXML
+    public void browseFlag(ActionEvent e) {
+         System.out.println(" teste");
+//open file browser and select file.
+    }
 
+    @FXML
+    public void saveChanges(ActionEvent e) {
+        // update the database with this currentCountry!
+        // the same with continent
+                
+    }
+
+    @FXML
+    public void newCountry(ActionEvent e) {
+        /*  
+        
+         Create a new row in database and return that continent to here
+        the same with continent
+         */
     }
 
 }

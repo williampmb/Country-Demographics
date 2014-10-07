@@ -106,7 +106,7 @@
         <Menu mnemonicParsing="false" text="Edit">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#toGoEditContinent" text="Edit Continent" visible="true" />
-            <MenuItem mnemonicParsing="false" text="Edit Country" visible="true" />
+            <MenuItem mnemonicParsing="false" onAction="#toGoEditCountry" text="Edit Country" visible="true" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Edit User" />
           </items>

@@ -25,6 +25,8 @@ public class CountryDemographics extends Application {
     public static String screen2File = "Screen2.fxml";
     public static String screen3ID = "editcontinent";
     public static String screen3File = "EditContinent.fxml";
+    public static String screen4ID = "editcountry";
+    public static String screen4File = "EditCountry.fxml";
     
     public static Service service;
     
@@ -41,6 +43,7 @@ public class CountryDemographics extends Application {
         mainContainer.loadScreen(CountryDemographics.screen1ID, CountryDemographics.screen1File);
         mainContainer.loadScreen(CountryDemographics.screen2ID, CountryDemographics.screen2File);
         mainContainer.loadScreen(CountryDemographics.screen3ID, CountryDemographics.screen3File);
+        mainContainer.loadScreen(CountryDemographics.screen4ID, CountryDemographics.screen4File);
         
         mainContainer.setScreen(CountryDemographics.screen1ID);
         
