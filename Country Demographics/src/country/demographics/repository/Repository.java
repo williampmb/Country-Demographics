@@ -55,6 +55,29 @@ public class Repository {
             Util.log("Connection failed to " + MYSQL_URL + ", with user " + MYSQL_USER);
         }
     }
+    
+    public Continent getContinentById(final int id) {
+        String sql = "SELECT * FROM continents WHERE cont_id=?";
+        
+         try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                Continent continent = new Continent();
+                continent.setId(result.getInt("cont_id"));
+                continent.setName(result.getString("cont_name"));
+                return continent;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public List<Continent> getContinents() {
         List<Continent> continents = new ArrayList<>();
@@ -79,16 +102,48 @@ public class Repository {
 
         return continents;
     }
-
-    public List<Country> getCountriesByContinentId(final int continentId) {
+    
+    public List<Country> getCountries() {
         List<Country> countryList = new ArrayList<>();
 
-        String sql = "SELECT * FROM countries WHERE cont_id=1";
+        String sql = "SELECT * FROM countries";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            //statement.setInt(1, continentId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Country country = new Country();
+                country.setArea(resultSet.getInt("count_area"));
+                country.setContinentId(resultSet.getInt("cont_id"));
+                country.setCurrency(resultSet.getString("count_currency"));
+                country.setId(resultSet.getInt("count_id"));
+                country.setFlag(this.getFlagByCountryId(country.getId()));
+                country.setName(resultSet.getString("count_name"));
+                country.setOfficialLanguage(resultSet.getString("count_language"));
+                country.setPopulation(resultSet.getInt("count_pop"));
+                country.setTimeZone(TimeZone.getTimeZone(resultSet.getString("count_timezone")));
+                country.setTLD(resultSet.getString("count_tld"));
+                countryList.add(country);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return countryList;
+    }
+
+    public List<Country> getCountriesByContinentId(final int continentId) {
+        List<Country> countryList = new ArrayList<>();
+
+        String sql = "SELECT * FROM countries WHERE cont_id=?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, continentId);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -135,6 +190,55 @@ public class Repository {
         }
         
         return path;
+    }
+    
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<User>();
+        
+                String sql = "SELECT uid, username, user_type FROM users";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                User user = new User();
+                user.setUserId(resultSet.getInt("uid"));
+                user.setUsername(resultSet.getString("username"));
+                user.setUserType(resultSet.getInt("user_type"));
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+        return users;
+    }
+    
+    public int insertContinent(final Continent continent) {
+        String sql = "INSERT INTO continents (cont_name) VALUES (?)";
+        
+        int result = 0;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, continent.getName());
+
+            result = statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(result > 0) {
+            return getLastId();
+        } else {
+            return -1;
+        }
     }
 
     public boolean insertCountry(final Country country) {
@@ -193,4 +297,22 @@ public class Repository {
         return user;
     }
 
+    public int getLastId() {
+        String sql = "SELECT LAST_INSERT_ID()";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            
+            while(resultSet.next()) {
+                return resultSet.getInt("LAST_INSERT_ID()");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return -1;
+    }
 }

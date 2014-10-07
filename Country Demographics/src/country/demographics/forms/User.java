@@ -47,4 +47,12 @@ public class User {
     public void setUserType(int userType) {
         this.userType = userType;
     }
+    
+    public String toString() {
+        return username;
+    }
+    
+    public String toStringData() {
+        return "USER: name=" + username + ", type=" + userType + ", id=" + userId;
+    }
 }

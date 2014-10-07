@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.TimeZone;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -29,6 +30,13 @@ public class ServiceTest {
     public void startService() {
         service = new Service();
     }
+    
+    @Test
+    public void test_getContinentById() {
+        Continent continent = service.getContinentById(1);
+        assertNotNull(continent);
+        System.out.println(continent.toString());
+    }
 
     /**
      * @see Service#getContinents() 
@@ -40,6 +48,17 @@ public class ServiceTest {
         
         assertNotNull(continents);
     }
+    
+    @Test
+    public void test_getCountries() {
+        
+        List<Country> countries = service.getCountries();
+        
+        assertNotNull(countries);
+        for(Country country : countries) {
+            System.out.println(country.toString());
+        }
+    }
 
     /**
      * @see Service#getCountriesByContinentId(int) 
@@ -47,6 +66,35 @@ public class ServiceTest {
     @Test
     public void test_getCountriesByContinentId() {
         List<Country> countries = service.getCountriesByContinentId(1);
+    }
+    
+    @Test
+    public void test_getLastId() {
+        service.getLastId();
+    }
+    
+    @Test
+    public void test_getUsers() {
+        List<User> users = service.getUsers();
+        
+        assertNotNull(users);
+        
+        for(User user : users) {
+            System.out.println(user.toString());
+        }
+    }
+    
+    @Test
+    public void test_insertContinent() {
+        Continent continent = new Continent();
+        
+        continent.setName("new cont :]");
+        
+        int result = service.addContinent(continent);
+        
+        System.out.println("last id result: " + result);
+        
+        assertNotEquals(-1, result);
     }
     
     @Test
@@ -72,7 +120,7 @@ public class ServiceTest {
     public void test_validateUser() {
         User user = new User();
         user.setUsername("jim");
-        user.setPassword("usaisbetter");
+        user.setPassword("1");
         user = service.validateUser(user);
         
         assertNotNull(user);

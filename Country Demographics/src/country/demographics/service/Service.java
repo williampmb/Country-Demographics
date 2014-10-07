@@ -17,7 +17,7 @@ import java.util.List;
  * @author admin
  */
 public class Service {
-    private Repository repository;
+    private final Repository repository;
     
     
     public Service() {
@@ -34,8 +34,8 @@ public class Service {
      * @param continent
      * @return true if update successful, else false
      */
-    public boolean addContinent(final Continent continent) {
-        return false;
+    public int addContinent(final Continent continent) {
+        return repository.insertContinent(continent);
     }
     
     public boolean addCountry(final Country country) {
@@ -43,7 +43,6 @@ public class Service {
     }
     
     public boolean addUser(final User user) {
-        //TODO
         return false;
     }
     
@@ -62,6 +61,10 @@ public class Service {
         return false;
     }
     
+    public Continent getContinentById(final int id) {
+        return repository.getContinentById(id);
+    }
+    
     /**
      * Returns list of all Continents or empty list if none exist
      * 
@@ -69,6 +72,10 @@ public class Service {
      */
     public List<Continent> getContinents() {
         return repository.getContinents();
+    }
+    
+    public List<Country> getCountries() {
+        return repository.getCountries();
     }
     
     /**
@@ -81,6 +88,7 @@ public class Service {
         return repository.getCountriesByContinentId(continentId);
     }
     
+
     /**
      * This returns all Countries that match the Search Text
      * 
@@ -89,6 +97,14 @@ public class Service {
      */
     public List<String> getCountriesBySearchText(final String searchText) {
         return null;
+    }
+    
+    public List<User> getUsers() {
+        return repository.getUsers();
+    }
+    
+    public int getLastId() {
+        return repository.getLastId();
     }
     
     public boolean updateContinent(final Continent continent) {
