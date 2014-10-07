@@ -56,6 +56,27 @@ public class Repository {
         }
     }
     
+    public boolean deleteCountryById(final int countryId) {
+        String sql = "DELETE FROM countries WHERE count_id=?";
+        
+        int result = -1;
+        
+        try{ 
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, countryId);
+
+            result = statement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        
+        return result > 0;
+    }
+    
     public Continent getContinentById(final int id) {
         String sql = "SELECT * FROM continents WHERE cont_id=?";
         
@@ -167,6 +188,39 @@ public class Repository {
 
         return countryList;
     }
+    
+    public Country getCountryById(final int id) {
+        
+        String sql = "SELECT * FROM countries WHERE count_id=?"; 
+                
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Country country = new Country();
+                country.setArea(resultSet.getInt("count_area"));
+                country.setContinentId(resultSet.getInt("cont_id"));
+                country.setCurrency(resultSet.getString("count_currency"));
+                country.setId(resultSet.getInt("count_id"));
+                country.setFlag(this.getFlagByCountryId(country.getId()));
+                country.setName(resultSet.getString("count_name"));
+                country.setOfficialLanguage(resultSet.getString("count_language"));
+                country.setPopulation(resultSet.getInt("count_pop"));
+                country.setTimeZone(TimeZone.getTimeZone(resultSet.getString("count_timezone")));
+                country.setTLD(resultSet.getString("count_tld"));
+                
+                return country;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public String getFlagByCountryId(final int countryId) {
         String sql = "SELECT flag_path FROM flags INNER JOIN countries "
@@ -241,7 +295,7 @@ public class Repository {
         }
     }
 
-    public boolean insertCountry(final Country country) {
+    public Country insertCountry(final Country country) {
         String sql = "INSERT INTO countries (count_name, count_pop, count_area, "
                 + "count_language, count_timezone, count_currency, count_tld, cont_id) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -255,11 +309,51 @@ public class Repository {
             statement.setLong(2, country.getPopulation());
             statement.setInt(3, country.getArea());
             statement.setString(4, country.getOfficialLanguage());
-            statement.setString(5, country.getTimeZone().getID());
+            try{    
+                statement.setString(5, country.getTimeZone().getID());
+            } catch(NullPointerException e) {
+                statement.setString(5, "");
+            }
+                
             statement.setString(6, country.getCurrency());
             statement.setString(7, country.getTLD());
             statement.setInt(8, country.getContinentId());
 
+            result = statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if(result > 0) {
+            return getCountryById(getLastId());
+        } 
+        
+        return null;
+    }
+    
+    public boolean updateCountry(final Country country) {
+        
+        String sql = "UPDATE countries SET count_name=?, count_pop=?, count_area=?, "
+                + "count_language=?, count_timezone=?, count_currency=?, count_tld=?, "
+                + "cont_id=? WHERE count_id=?";
+        
+        int result = 0;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, country.getName());
+            statement.setLong(2, country.getPopulation());
+            statement.setInt(3, country.getArea());
+            statement.setString(4, country.getOfficialLanguage());
+            statement.setString(5, country.getTimeZone().getID());
+            statement.setString(6, country.getCurrency());
+            statement.setString(7, country.getTLD());
+            statement.setInt(8, country.getContinentId());
+            statement.setInt(9, country.getId());  
+            
             result = statement.executeUpdate();
 
         } catch (SQLException e) {

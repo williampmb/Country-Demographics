@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.TimeZone;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +30,17 @@ public class ServiceTest {
     @Before
     public void startService() {
         service = new Service();
+    }
+    
+    @Test
+    public void test_deleteCountry() {
+        Country country = new Country();
+        
+        country.setName("test");
+        
+        Country newcount = service.addCountry(country);
+                
+        assertTrue(service.deleteCountryById(newcount.getId()));
     }
     
     @Test
@@ -66,6 +78,14 @@ public class ServiceTest {
     @Test
     public void test_getCountriesByContinentId() {
         List<Country> countries = service.getCountriesByContinentId(1);
+    }
+    
+    @Test
+    public void test_getCountryById() {
+        
+        Country country = service.getCountryById(1);
+        
+        assertNotNull(country);
     }
     
     @Test
@@ -110,9 +130,21 @@ public class ServiceTest {
         country.setTLD(".jim");
         country.setTimeZone(TimeZone.getTimeZone("Pacific/Apia"));
         
-        assertTrue( service.addCountry(country) );
+        assertNotNull(service.addCountry(country) );
     }
 
+    @Test
+    public void test_updateCountry() {
+        Country country = service.getCountryById(1);
+        
+        country.setArea(999);
+        
+        assertTrue(service.updateCountry(country));
+        
+        assertEquals(999,service.getCountryById(1).getArea());
+    }
+    
+    
     /**
      * @see Service#validateUser(country.demographics.forms.User) 
      */

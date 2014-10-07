@@ -38,7 +38,7 @@ public class Service {
         return repository.insertContinent(continent);
     }
     
-    public boolean addCountry(final Country country) {
+    public Country addCountry(final Country country) {
         return repository.insertCountry(country);
     }
     
@@ -52,8 +52,7 @@ public class Service {
     }
     
     public boolean deleteCountryById(final int countryId) {
-        //TODO
-        return false;
+        return repository.deleteCountryById(countryId);
     }
     
     public boolean deleteUserById(final int countryId) {
@@ -99,6 +98,10 @@ public class Service {
         return null;
     }
     
+    public Country getCountryById(final int id) {
+        return repository.getCountryById(id);
+    }
+    
     public List<User> getUsers() {
         return repository.getUsers();
     }
@@ -113,8 +116,7 @@ public class Service {
     }
     
     public boolean updateCountry(final Country country) {
-        //TODO
-        return false;
+        return repository.updateCountry(country);
     }
     
     public boolean updateUser(final User user) {
