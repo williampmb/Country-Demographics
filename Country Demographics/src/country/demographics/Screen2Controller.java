@@ -124,7 +124,7 @@ public class Screen2Controller implements Initializable, ControlledScreen {
     public void toGoEditContinent(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen3ID);
         CountryDemographics.stage.setWidth(311 + 10);
-        CountryDemographics.stage.setHeight(200);
+        CountryDemographics.stage.setHeight(200 + 40);
 
     }
     
@@ -132,7 +132,7 @@ public class Screen2Controller implements Initializable, ControlledScreen {
     public void toGoEditCountry(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen4ID);
         CountryDemographics.stage.setWidth(330 + 10);
-        CountryDemographics.stage.setHeight(500+ 5 );
+        CountryDemographics.stage.setHeight(590 + 40);
 
     }
 

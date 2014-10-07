@@ -10,16 +10,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="481.0000999999975" prefWidth="322.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.EditCountry">
+<AnchorPane id="AnchorPane" prefHeight="497.0" prefWidth="322.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.EditCountry">
   <children>
-    <Pane prefHeight="200.0" prefWidth="315.0" AnchorPane.bottomAnchor="5.02" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.02">
+    <Pane prefHeight="200.0" prefWidth="315.0" AnchorPane.bottomAnchor="5.02" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-5.02">
       <children>
         <Label layoutX="20.0" layoutY="55.0" text="Edit Country">
           <font>
             <Font name="Times New Roman Bold" size="25.0" />
           </font>
         </Label>
-        <TextField id="txtContinent" fx:id="txtCountry" layoutX="67.0" layoutY="122.0" prefWidth="186.0" promptText="Name" />
         <ChoiceBox fx:id="cbContinent" layoutX="185.0" layoutY="34.0" prefWidth="123.0">
           <items>
             <FXCollections fx:factory="observableArrayList">
@@ -29,17 +28,6 @@
             </FXCollections>
           </items>
         </ChoiceBox>
-        <HBox alignment="CENTER_RIGHT" layoutX="29.0" layoutY="417.0" prefHeight="50.0" prefWidth="251.0" spacing="20.0">
-          <children>
-            <Button id="btnNew" mnemonicParsing="false" text="New" />
-            <Button id="btnBack" mnemonicParsing="false" text="Save" />
-            <Button mnemonicParsing="false" text="Delete" />
-            <Button id="btnSave" mnemonicParsing="false" onAction="#toGoScreen2" text="Back" />
-          </children>
-          <padding>
-            <Insets />
-          </padding>
-        </HBox>
         <ChoiceBox id="cbContinent" fx:id="cbCountry" layoutX="185.0" layoutY="73.0" prefWidth="123.0">
           <items>
             <FXCollections fx:factory="observableArrayList">
@@ -49,20 +37,40 @@
             </FXCollections>
           </items>
         </ChoiceBox>
-        <VBox layoutX="27.0" layoutY="160.0" prefHeight="253.0" prefWidth="127.5" spacing="15.0">
+        <Pane layoutX="0.0" layoutY="110.0" prefHeight="323.97998046875" prefWidth="322.0">
           <children>
-            <TextField prefWidth="113.0" promptText="Population" />
-            <TextField prefWidth="113.0" promptText="Population" />
-            <TextField prefWidth="113.0" promptText="Area" />
-            <TextField prefWidth="113.0" promptText="Oficial Language" />
-            <TextField prefWidth="113.0" promptText="Time Zone" />
-            <TextField prefWidth="113.0" promptText="Currency" />
-            <TextField prefWidth="113.0" promptText="TLD" />
-            <TextField prefWidth="113.0" promptText="Path Flag" />
+            <TextField id="txtContinent" fx:id="txtCountry" layoutX="68.0" layoutY="14.0" prefWidth="186.0" promptText="Name" />
+            <VBox layoutX="33.0" layoutY="47.0" prefHeight="253.0" prefWidth="127.5" spacing="15.0">
+              <children>
+                <TextField fx:id="txtPop" prefWidth="113.0" promptText="Population" />
+                <TextField fx:id="txtArea" prefWidth="113.0" promptText="Area" />
+                <TextField fx:id="txtOfficialL" prefWidth="113.0" promptText="Oficial Language" />
+                <TextField fx:id="txtTimeZone" prefWidth="113.0" promptText="Time Zone" />
+                <TextField fx:id="txtCurrency" prefWidth="113.0" promptText="Currency" />
+                <TextField fx:id="txtTLD" prefWidth="113.0" promptText="TLD" />
+                <TextField fx:id="txtPathFlag" prefWidth="113.0" promptText="Path Flag" />
+              </children>
+            </VBox>
+            <ImageView fx:id="ivFlag" fitHeight="128.0" fitWidth="128.0" layoutX="174.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" />
+            <Button layoutX="208.0" layoutY="238.0" mnemonicParsing="false" onAction="#browseFlag" text="Browse" />
+            <Label id="lbErro" fx:id="lbMessage" layoutX="224.0" layoutY="287.0" text="" />
           </children>
-        </VBox>
-        <ImageView fitHeight="128.0" fitWidth="128.0" layoutX="171.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true" />
-        <Button layoutX="206.0" layoutY="321.0" mnemonicParsing="false" onAction="#browseFlag" text="Browse" />
+        </Pane>
+        <Pane layoutX="0.0" layoutY="425.0" prefHeight="71.99996948242188" prefWidth="308.0">
+          <children>
+            <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="11.0" prefHeight="50.0" prefWidth="251.0" spacing="20.0">
+              <children>
+                <Button id="btnNew" mnemonicParsing="false" onAction="#newCountry" text="New" />
+                <Button id="btnBack" mnemonicParsing="false" onAction="#saveChanges" text="Save" />
+                <Button mnemonicParsing="false" text="Delete" />
+                <Button id="btnSave" mnemonicParsing="false" onAction="#toGoScreen2" text="Back" />
+              </children>
+              <padding>
+                <Insets />
+              </padding>
+            </HBox>
+          </children>
+        </Pane>
       </children>
     </Pane>
   </children>

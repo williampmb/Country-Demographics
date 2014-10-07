@@ -176,7 +176,7 @@ public class Repository {
                 country.setFlag(this.getFlagByCountryId(country.getId()));
                 country.setName(resultSet.getString("count_name"));
                 country.setOfficialLanguage(resultSet.getString("count_language"));
-                country.setPopulation(resultSet.getInt("count_pop"));
+                country.setPopulation(resultSet.getLong("count_pop"));
                 country.setTimeZone(TimeZone.getTimeZone(resultSet.getString("count_timezone")));
                 country.setTLD(resultSet.getString("count_tld"));
                 countryList.add(country);
