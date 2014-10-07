@@ -52,7 +52,7 @@ public class LoginController implements Initializable, ControlledScreen {
     public void toGoScreen2(ActionEvent e) {
        //TODO verify with database, and push the information from a user.
         
-      /*  User user = new User();
+        User user = new User();
         user.setUsername(txtLogin.getText());
         user.setPassword(pfPassword.getText());
         
@@ -65,9 +65,9 @@ public class LoginController implements Initializable, ControlledScreen {
             CountryDemographics.stage.setHeight(400);
             
             
-        }*/
+        }
         
-        
+      /*  
         if (txtLogin.getText().equals("admin") && pfPassword.getText().equals("123")) {
            
             myController.setScreen(CountryDemographics.screen2ID);
@@ -75,7 +75,7 @@ public class LoginController implements Initializable, ControlledScreen {
             CountryDemographics.stage.setHeight(400);
             
        
-       }
+       }*/
 
     }
 

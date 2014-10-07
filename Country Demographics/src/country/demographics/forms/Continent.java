@@ -30,6 +30,6 @@ public class Continent {
     }
     
     public String toString() {
-        return  name + ", " + id;
+        return  name;
     }
 }

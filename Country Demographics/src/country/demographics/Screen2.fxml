@@ -105,8 +105,10 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
           <items>
-            <MenuItem mnemonicParsing="false" text="Delete" visible="true" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
+            <MenuItem mnemonicParsing="false" onAction="#toGoEditContinent" text="Edit Continent" visible="true" />
+            <MenuItem mnemonicParsing="false" text="Edit Country" visible="true" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Edit User" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
