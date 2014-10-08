@@ -64,19 +64,7 @@ public class LoginController implements Initializable, ControlledScreen {
             CountryDemographics.stage.setWidth(497+10);
             CountryDemographics.stage.setHeight(400);
             
-            
         }
-        
-      /*  
-        if (txtLogin.getText().equals("admin") && pfPassword.getText().equals("123")) {
-           
-            myController.setScreen(CountryDemographics.screen2ID);
-            CountryDemographics.stage.setWidth(497+10);
-            CountryDemographics.stage.setHeight(400);
-            
-       
-       }*/
-
     }
 
 }

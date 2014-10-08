@@ -140,7 +140,7 @@ public class Repository {
                 country.setContinentId(resultSet.getInt("cont_id"));
                 country.setCurrency(resultSet.getString("count_currency"));
                 country.setId(resultSet.getInt("count_id"));
-                country.setFlag(this.getFlagByCountryId(country.getId()));
+                country.setFlag(resultSet.getString("count_flag"));
                 country.setName(resultSet.getString("count_name"));
                 country.setOfficialLanguage(resultSet.getString("count_language"));
                 country.setPopulation(resultSet.getInt("count_pop"));
@@ -173,7 +173,7 @@ public class Repository {
                 country.setContinentId(resultSet.getInt("cont_id"));
                 country.setCurrency(resultSet.getString("count_currency"));
                 country.setId(resultSet.getInt("count_id"));
-                country.setFlag(this.getFlagByCountryId(country.getId()));
+                country.setFlag(resultSet.getString("count_flag"));
                 country.setName(resultSet.getString("count_name"));
                 country.setOfficialLanguage(resultSet.getString("count_language"));
                 country.setPopulation(resultSet.getLong("count_pop"));
@@ -205,7 +205,7 @@ public class Repository {
                 country.setContinentId(resultSet.getInt("cont_id"));
                 country.setCurrency(resultSet.getString("count_currency"));
                 country.setId(resultSet.getInt("count_id"));
-                country.setFlag(this.getFlagByCountryId(country.getId()));
+                country.setFlag(resultSet.getString("count_flag"));
                 country.setName(resultSet.getString("count_name"));
                 country.setOfficialLanguage(resultSet.getString("count_language"));
                 country.setPopulation(resultSet.getInt("count_pop"));
@@ -335,9 +335,11 @@ public class Repository {
     
     public boolean updateCountry(final Country country) {
         
+        System.out.println(country.toStringData());
+        
         String sql = "UPDATE countries SET count_name=?, count_pop=?, count_area=?, "
                 + "count_language=?, count_timezone=?, count_currency=?, count_tld=?, "
-                + "cont_id=? WHERE count_id=?";
+                + "cont_id=?, count_flag=? WHERE count_id=?";
         
         int result = 0;
 
@@ -352,8 +354,9 @@ public class Repository {
             statement.setString(6, country.getCurrency());
             statement.setString(7, country.getTLD());
             statement.setInt(8, country.getContinentId());
-            statement.setInt(9, country.getId());  
-            
+            statement.setString(9, country.getFlag());  
+            statement.setInt(10, country.getId());  
+
             result = statement.executeUpdate();
 
         } catch (SQLException e) {

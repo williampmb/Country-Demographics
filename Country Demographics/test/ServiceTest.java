@@ -39,7 +39,7 @@ public class ServiceTest {
         country.setName("test");
         
         Country newcount = service.addCountry(country);
-                
+        System.out.println(newcount.getId());
         assertTrue(service.deleteCountryById(newcount.getId()));
     }
     
@@ -127,21 +127,22 @@ public class ServiceTest {
         country.setOfficialLanguage("English");
         country.setName("JimLand");
         country.setPopulation(111);
-        country.setTLD(".jim");
+        country.setTLD(".jim"); 
         country.setTimeZone(TimeZone.getTimeZone("Pacific/Apia"));
         
-        assertNotNull(service.addCountry(country) );
+        assertNotNull(service.addCountry(country));
     }
 
     @Test
     public void test_updateCountry() {
         Country country = service.getCountryById(1);
         
-        country.setArea(999);
+        int area = (int)(Math.random() * 10000.0);
+        country.setArea(area);
         
         assertTrue(service.updateCountry(country));
         
-        assertEquals(999,service.getCountryById(1).getArea());
+        assertEquals(area,service.getCountryById(1).getArea());
     }
     
     

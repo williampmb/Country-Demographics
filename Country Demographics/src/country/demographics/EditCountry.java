@@ -7,6 +7,8 @@ package country.demographics;
 
 import country.demographics.forms.Continent;
 import country.demographics.forms.Country;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 /**
  * FXML Controller class
@@ -161,30 +164,32 @@ public class EditCountry implements Initializable, ControlledScreen {
 
     }
 
-    private void displayFlag(String path)  {
-        try {
+    private void displayFlag(String path) {
 
+        try {
             ivFlag.setImage(new Image(path));
             ivFlag.setVisible(true);
         } catch (NullPointerException e) {
-            
+            // flag is just null
             ivFlag.setVisible(false);
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             if (path.equals("")) {
-                ivFlag.setVisible(false);
+                lbMessage.setVisible(false);
             } else {
-                
                 ivFlag.setVisible(false);
-                
+
                 lbMessage.setText("URL invalid.");
-                try{
+                try {
                     Thread.sleep(400);
-                    lbMessage.setVisible(false);
-                }catch(InterruptedException ex){
+                    lbMessage.setVisible(true);
+                } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
 
             }
+
+            ivFlag.setVisible(false);
         }
     }
 
@@ -215,8 +220,25 @@ public class EditCountry implements Initializable, ControlledScreen {
 
     @FXML
     public void browseFlag(ActionEvent e) {
-        System.out.println(" teste");
-//open file browser and select file.
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.*"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png"));
+
+        File file = fileChooser.showOpenDialog(null);
+        try {
+
+            if (file != null) {
+                txtPathFlag.setText(file.toURI().toURL().toString());
+                displayFlag(file.toURI().toURL().toString());
+            }
+
+        } catch (IOException ex) {
+
+        }
     }
 
     @FXML

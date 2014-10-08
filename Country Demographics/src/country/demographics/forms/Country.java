@@ -108,6 +108,6 @@ public class Country {
         return "Country: id=" + id + ", name=" + name + ", area=" + area 
                 + ", officialLanguage=" + officialLanguage + ", timezone=" + timeZone
                 + ", currency=" + currency + ", tld=" + tld 
-                + ", continentId=" + continentId;
+                + ", continentId=" + continentId + ", flag=" + flag;
     }
 }
