@@ -6,6 +6,7 @@
 package country.demographics;
 
 import country.demographics.forms.Continent;
+import country.demographics.forms.Country;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,12 +41,10 @@ public class EditContinent implements Initializable, ControlledScreen {
 
     Continent currentContinent = null;
 
-  //  @FXML
-    //  Button btnBack;
-    // @FXML
-    // Button btnSave;
-    // @FXML
-    //  Button btnNew;
+    @FXML
+    Button bntSave;
+    @FXML
+    Button bntDelete;
     int count = 0;
 
     /**
@@ -68,7 +67,21 @@ public class EditContinent implements Initializable, ControlledScreen {
             @Override
             public void changed(ObservableValue<? extends Continent> ov, Continent t, Continent t1) {
                 currentContinent = t1;
-                txtContinent.setText(t1.getName());
+                if (t1 != null) {
+                    txtContinent.setText(t1.getName());
+
+                } else {
+
+                }
+
+                if (continents.isEmpty()) {
+                    cbContinent.setDisable(true);
+
+                } else {
+                    cbContinent.setDisable(false);
+
+                }
+
             }
         });
 
@@ -87,19 +100,31 @@ public class EditContinent implements Initializable, ControlledScreen {
         CountryDemographics.stage.setHeight(400);
     }
 
-    
-
     @FXML
     public void saveChanges(ActionEvent e) {
-        // pegar o continente Current Continent e alterar o nome para 
-        // o texto do txtContinent.getText();
+        Continent continentSelected = (Continent) cbContinent.getSelectionModel().getSelectedItem();
+        continentSelected.setName(txtContinent.getText());
+
+        //TODO
+        // UPDATE IN DATABASE CONTINENT NAME!
     }
 
     @FXML
     public void newContinent(ActionEvent e) {
-        
-        Continent nCont = new Continent();
+        // Continent nContinent = Create a new Continent in Database name: "New Continent"
+        // continents.add(nContinent);
+        //cbContinent.getSelectionModel().select(nCont);
 
+    }
+    
+    @FXML
+    public void delete(ActionEvent e) {
+
+        Continent selectedContinent =  (Continent) cbContinent.getSelectionModel().getSelectedItem();
+        continents.remove(selectedContinent);
+
+        //TODO
+        // DELETE FROM DATABASE selectedContinent
     }
 
 }

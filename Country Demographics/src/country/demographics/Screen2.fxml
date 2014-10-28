@@ -9,7 +9,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="497.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.Screen2Controller">
+<AnchorPane id="AnchorPane" prefHeight="430.0" prefWidth="497.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.Screen2Controller">
   <children>
     <BorderPane prefHeight="376.0" prefWidth="497.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
       <center>
@@ -42,48 +42,55 @@
               <children>
                 <ScrollPane fitToHeight="false" fitToWidth="false" hbarPolicy="NEVER" prefHeight="378.0" prefWidth="244.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
                   <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="-1.0" prefWidth="-1.0">
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="404.0" prefWidth="-1.0">
                       <children>
-                        <VBox alignment="TOP_LEFT" prefHeight="376.0" prefWidth="244.0" spacing="30.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="-1.0">
+                        <VBox alignment="TOP_LEFT" prefHeight="376.0" prefWidth="244.0" spacing="15.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="-1.0">
                           <children>
                             <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
                               <children>
                                 <Label prefHeight="21.0" prefWidth="100.0" text="Polulation: " />
                                 <Label prefHeight="21.0" prefWidth="37.0" text="" />
-                                <Label fx:id="populacao" prefHeight="21.0" prefWidth="100.0" text="202,656,788" />
+                                <Label id="populacao" fx:id="lbPop" prefHeight="21.0" prefWidth="100.0" text="" />
                               </children>
                             </HBox>
                             <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
                               <children>
                                 <Label prefHeight="21.0" prefWidth="100.0" text="Area:" />
                                 <Label prefHeight="21.0" prefWidth="37.0" text="" />
-                                <Label prefHeight="21.0" prefWidth="100.0" text="8,515,767 km2" />
+                                <Label fx:id="lbArea" prefHeight="21.0" prefWidth="100.0" text="" />
                               </children>
                             </HBox>
                             <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
                               <children>
                                 <Label prefHeight="21.0" prefWidth="100.0" text="Official Language:" />
                                 <Label prefHeight="21.0" prefWidth="37.0" text="" />
-                                <Label prefHeight="21.0" prefWidth="100.0" text="" />
+                                <Label fx:id="lbOfficialL" prefHeight="21.0" prefWidth="100.0" text="" />
                               </children>
                             </HBox>
                             <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
                               <children>
                                 <Label prefHeight="21.0001220703125" prefWidth="98.0" text="Time Zone:" />
                                 <Label prefHeight="21.0" prefWidth="37.0" text="" />
-                                <Label prefHeight="21.0" prefWidth="100.0" text=".br" />
+                                <Label fx:id="lbTimeZone" prefHeight="21.0" prefWidth="100.0" text="" />
                               </children>
                             </HBox>
                             <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
                               <children>
                                 <Label prefHeight="21.0" prefWidth="100.0" text="Currency:" />
                                 <Label prefHeight="21.0" prefWidth="37.0" text="" />
-                                <Label id="populacao" prefHeight="21.0" prefWidth="100.0" text="202,656,788" />
+                                <Label id="populacao" fx:id="lbCurrency" prefHeight="21.0" prefWidth="100.0" text="" />
+                              </children>
+                            </HBox>
+                            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="244.0">
+                              <children>
+                                <Label prefHeight="21.0" prefWidth="100.0" text="TLD:" />
+                                <Label prefHeight="21.0" prefWidth="37.0" text="" />
+                                <Label id="populacao" fx:id="lbTLD" prefHeight="21.0" prefWidth="100.0" text="" />
                               </children>
                             </HBox>
                           </children>
                           <padding>
-                            <Insets left="10.0" top="10.0" />
+                            <Insets bottom="5.0" left="10.0" top="5.0" />
                           </padding>
                         </VBox>
                       </children>
@@ -111,7 +118,7 @@
             <MenuItem mnemonicParsing="false" text="Edit User" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
+        <Menu mnemonicParsing="false" onAction="#openAbout" text="Help">
           <items>
             <MenuItem mnemonicParsing="false" text="About" />
           </items>

@@ -18,12 +18,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -40,20 +45,37 @@ public class Screen2Controller implements Initializable, ControlledScreen {
     Menu item;
     ObservableList<Country> countries = FXCollections.observableArrayList();
     ObservableList<Country> countriesByContinentIdObservable = FXCollections.observableArrayList();
-    ObservableList<Continent> continents = FXCollections.observableArrayList();
+     public static ObservableList<Continent> continents = FXCollections.observableArrayList();
     @FXML
     ComboBox cbCountry;
     @FXML
     ComboBox cbContinent;
     @FXML
     ImageView ivFlag;
+
+    @FXML
+    Label lbPop;
+    @FXML
+    Label lbArea;
+    @FXML
+    Label lbOfficialL;
+    @FXML
+    Label lbTimeZone;
+    @FXML
+    Label lbCurrency;
+    @FXML
+    Label lbTLD;
+
+    Country currentCountry;
     int count = 0;
+    Continent currentContinent;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         List<Continent> continents1 = CountryDemographics.service.getContinents();
 
         for (Continent c : continents1) {
@@ -63,27 +85,29 @@ public class Screen2Controller implements Initializable, ControlledScreen {
 
         cbContinent.setItems(continents);
 
-       
         cbContinent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Continent>() {
 
             @Override
             public void changed(ObservableValue<? extends Continent> ov, Continent t, Continent t1) {
-                countriesByContinentIdObservable.clear();
-                cbCountry.setItems(countriesByContinentIdObservable);
-
-                List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(t1.getId());
-
-                for (Country c : countriesByContinentIdList) {
-                    System.out.println(c.toString());
-                    countriesByContinentIdObservable.add(c);
-
-                }
-                if (countriesByContinentIdObservable.isEmpty()) {
-
-                    cbCountry.setDisable(true);
-                } else {
-                    cbCountry.setDisable(false);
+                currentContinent = t1;
+                if (t1 != null) {
+                    countriesByContinentIdObservable.clear();
                     cbCountry.setItems(countriesByContinentIdObservable);
+                    List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(t1.getId());
+
+                    for (Country c : countriesByContinentIdList) {
+                        System.out.println(c.toString());
+                        countriesByContinentIdObservable.add(c);
+
+                    }
+                    if (countriesByContinentIdObservable.isEmpty()) {
+
+                        cbCountry.setDisable(true);
+                    } else {
+                        cbCountry.setDisable(false);
+                        cbCountry.setItems(countriesByContinentIdObservable);
+
+                    }
 
                 }
 
@@ -97,16 +121,65 @@ public class Screen2Controller implements Initializable, ControlledScreen {
             @Override
             public void changed(ObservableValue<? extends Country> ov, Country t, Country t1) {
 
-                if (t1 == null) {
-                    ivFlag.setVisible(false);
-                } else {
-                    ivFlag.setVisible(true);
-                    ivFlag.setImage(new Image(t1.getFlag()));
+                if (t1 != null) {
+                    currentCountry = t1;
 
+                    lbPop.setText(String.valueOf(t1.getPopulation()));
+
+                    lbArea.setText(Integer.toString(t1.getArea()));
+
+                    lbOfficialL.setText(t1.getOfficialLanguage());
+
+                    lbTimeZone.setText(t1.getTimeZone().getID());
+
+                    lbCurrency.setText(t1.getCurrency());
+
+                    lbTLD.setText(t1.getTLD());
+
+                    displayFlag(t1.getFlag());
+
+                } else {
+                    clearFields();
                 }
             }
         });
 
+    }
+
+    private void clearFields() {
+        lbPop.setText("");
+        lbArea.setText("");
+        lbOfficialL.setText("");
+        lbTimeZone.setText("");
+        lbCurrency.setText("");
+        lbTLD.setText("");
+        displayFlag("");
+    }
+
+    private void displayFlag(String path) {
+        try {
+
+            ivFlag.setImage(new Image(path));
+            ivFlag.setVisible(true);
+        } catch (NullPointerException e) {
+
+            ivFlag.setVisible(false);
+        } catch (IllegalArgumentException e) {
+            if (path.equals("")) {
+                ivFlag.setVisible(false);
+            } else {
+
+                ivFlag.setVisible(false);
+
+                try {
+                    Thread.sleep(400);
+
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        }
     }
 
     @Override
@@ -129,11 +202,48 @@ public class Screen2Controller implements Initializable, ControlledScreen {
     }
     
     @FXML
+    public void openAbout(ActionEvent e){
+       try{
+           Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/About.fxml"));
+           Stage stage = new Stage();
+           Scene scene = new Scene(parent);
+           stage.setScene(scene);
+           stage.setTitle("About");
+           stage.show();
+           stage.setResizable(false);
+           
+           
+       }catch(Exception ex){
+           System.out.println("Abriu About nao!");
+       }
+        
+    }
+
+    @FXML
     public void toGoEditCountry(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen4ID);
         CountryDemographics.stage.setWidth(330 + 10);
         CountryDemographics.stage.setHeight(590 + 40);
 
+        int countrySelectedIndex = cbCountry.getSelectionModel().getSelectedIndex();
+        cbCountry.getSelectionModel().clearSelection(countrySelectedIndex);
+
+        int continentSelectedIndex = cbContinent.getSelectionModel().getSelectedIndex();
+        cbContinent.getSelectionModel().clearSelection(continentSelectedIndex);
+
+    }
+
+    public void refreshChoiceBox() {
+        CountryDemographics.service.updateCountry(currentCountry);
+
+        countriesByContinentIdObservable.clear();
+        cbCountry.setItems(countriesByContinentIdObservable);
+
+        List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(currentContinent.getId());
+
+        for (Country c : countriesByContinentIdList) {
+            countriesByContinentIdObservable.add(c);
+        }
     }
 
 }
