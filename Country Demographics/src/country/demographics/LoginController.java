@@ -66,5 +66,4 @@ public class LoginController implements Initializable, ControlledScreen {
             
         }
     }
-
 }

@@ -31,6 +31,21 @@ public class ServiceTest {
     public void startService() {
         service = new Service();
     }
+   
+    @Test
+    public void test_addRemoveUser() {
+        User user = new User();
+        user.setUsername("user123");
+        user.setPassword("pw12345");
+        user.setUserType(1);
+        
+        assertTrue(service.addUser(user));
+        
+        User retrieved = service.validateUser(user);
+        assertNotNull(retrieved);
+        
+        assertTrue(service.deleteUserById(retrieved.getUserId()));
+    }
     
     @Test
     public void test_deleteCountry() {
@@ -39,7 +54,6 @@ public class ServiceTest {
         country.setName("test");
         
         Country newcount = service.addCountry(country);
-        System.out.println(newcount.getId());
         assertTrue(service.deleteCountryById(newcount.getId()));
     }
     
@@ -47,7 +61,6 @@ public class ServiceTest {
     public void test_getContinentById() {
         Continent continent = service.getContinentById(1);
         assertNotNull(continent);
-        System.out.println(continent.toString());
     }
 
     /**
@@ -55,21 +68,14 @@ public class ServiceTest {
      */
     @Test
     public void test_getContinents() {
-        
         List<Continent> continents = service.getContinents();
-        
         assertNotNull(continents);
     }
     
     @Test
     public void test_getCountries() {
-        
         List<Country> countries = service.getCountries();
-        
         assertNotNull(countries);
-        for(Country country : countries) {
-            System.out.println(country.toString());
-        }
     }
 
     /**
@@ -78,11 +84,17 @@ public class ServiceTest {
     @Test
     public void test_getCountriesByContinentId() {
         List<Country> countries = service.getCountriesByContinentId(1);
+        assertNotNull(countries);
+    }
+    
+    @Test
+    public void test_getCountriesBySearchText() {
+        List<Country> countries = service.getCountriesBySearchText("united stat");
+        assertNotNull(countries);
     }
     
     @Test
     public void test_getCountryById() {
-        
         Country country = service.getCountryById(1);
         
         assertNotNull(country);
@@ -98,10 +110,6 @@ public class ServiceTest {
         List<User> users = service.getUsers();
         
         assertNotNull(users);
-        
-        for(User user : users) {
-            System.out.println(user.toString());
-        }
     }
     
     @Test
@@ -111,10 +119,10 @@ public class ServiceTest {
         continent.setName("new cont :]");
         
         int result = service.addContinent(continent);
-        
-        System.out.println("last id result: " + result);
-        
+                
         assertNotEquals(-1, result);
+        
+        assertTrue(service.deleteContinentById(result));
     }
     
     @Test
@@ -130,9 +138,29 @@ public class ServiceTest {
         country.setTLD(".jim"); 
         country.setTimeZone(TimeZone.getTimeZone("Pacific/Apia"));
         
-        assertNotNull(service.addCountry(country));
+        Country retrieved = service.addCountry(country);
+        assertNotNull(retrieved);
+        
+        service.deleteCountryById(retrieved.getId());
     }
 
+    @Test
+    public void test_updateContinent() {
+        Continent c = service.getContinentById(1);
+        
+        String origName = c.getName();
+        String newName = "newName";
+        c.setName(newName);
+        
+        assertTrue(service.updateContinent(c));
+        
+        assertEquals(service.getContinentById(c.getId()).getName(), newName );
+        
+        c.setName(origName);
+        
+        service.updateContinent(c);
+    }
+    
     @Test
     public void test_updateCountry() {
         Country country = service.getCountryById(1);
@@ -153,7 +181,7 @@ public class ServiceTest {
     public void test_validateUser() {
         User user = new User();
         user.setUsername("jim");
-        user.setPassword("1");
+        user.setPassword("a");
         user = service.validateUser(user);
         
         assertNotNull(user);

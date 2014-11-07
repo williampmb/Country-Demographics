@@ -1,11 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Repository to interact with database
+ * 
  */
 package country.demographics.repository;
 
-import com.mysql.jdbc.StringUtils;
 import country.demographics.forms.Continent;
 import country.demographics.forms.Country;
 import country.demographics.forms.User;
@@ -20,9 +18,6 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.image.Image;
 
 /**
  *
@@ -56,10 +51,68 @@ public class Repository {
         }
     }
     
+    /**
+     * Creates a user in the database with username, password and usertype from
+     *  passed User object
+     * 
+     * @param user
+     * @return True/False depending if update was successful
+     */
+    public boolean createUser(final User user) {
+        String sql = "INSERT INTO users (username, password, user_type) "
+                + "VALUES (?, ?, ?)";
+        
+        int result = 0;
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            statement.setString(1, user.getUsername());
+            
+            String encryptedPassword = Util.encrypt(user.getPassword());
+            
+            statement.setString(2, encryptedPassword);
+            statement.setInt(3, user.getUserType());
+            
+            result = statement.executeUpdate();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return result > 0;
+        
+    }
+    
+    public boolean deleteContinentById(final int continentId) {
+        String sql = "DELETE FROM continents WHERE cont_id=?";
+        
+        int result;
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            statement.setInt(1, continentId);
+            
+            result = statement.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        return result > 0;
+    }
+    
+    /**
+     * Deletes a Country by it's ID
+     * 
+     * @param countryId
+     * @return True/False depending on whether or not it was successful
+     */
     public boolean deleteCountryById(final int countryId) {
         String sql = "DELETE FROM countries WHERE count_id=?";
         
-        int result = -1;
+        int result;
         
         try{ 
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -73,8 +126,25 @@ public class Repository {
             return false;
         }
         
-        
         return result > 0;
+    }
+    
+    public boolean deleteUserById(final int userId) {
+        String sql = "DELETE FROM users WHERE uid=?";
+        
+        int result = 0;
+        
+        try {
+            PreparedStatement statement = connection.prepareCall(sql);
+            
+            statement.setInt(1, userId);
+            
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return result > 0; 
     }
     
     public Continent getContinentById(final int id) {
@@ -186,6 +256,39 @@ public class Repository {
             e.printStackTrace();
         }
 
+        return countryList;
+    } 
+    
+    public List<Country> getCountriesBySearchText(final String searchText) {
+        List<Country> countryList = new ArrayList<>();
+        
+        String sql = "SELECT * FROM countries WHERE count_name like ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            statement.setString(1, "%" + searchText + "%");
+            ResultSet resultSet = statement.executeQuery();
+            
+                        while (resultSet.next()) {
+                Country country = new Country();
+                country.setArea(resultSet.getInt("count_area"));
+                country.setContinentId(resultSet.getInt("cont_id"));
+                country.setCurrency(resultSet.getString("count_currency"));
+                country.setId(resultSet.getInt("count_id"));
+                country.setFlag(resultSet.getString("count_flag"));
+                country.setName(resultSet.getString("count_name"));
+                country.setOfficialLanguage(resultSet.getString("count_language"));
+                country.setPopulation(resultSet.getLong("count_pop"));
+                country.setTimeZone(TimeZone.getTimeZone(resultSet.getString("count_timezone")));
+                country.setTLD(resultSet.getString("count_tld"));
+                countryList.add(country);
+            }
+                        
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
         return countryList;
     }
     
@@ -333,10 +436,28 @@ public class Repository {
         return null;
     }
     
+    public boolean updateContinent(final Continent continent) {
+        
+        String sql = "UPDATE continents SET cont_name = ? WHERE cont_id = ?";
+        
+        int result = 0;
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            statement.setString(1, continent.getName());
+            statement.setInt(2, continent.getId());
+            
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return result > 0;
+    }
+    
     public boolean updateCountry(final Country country) {
-        
-        System.out.println(country.toStringData());
-        
+                
         String sql = "UPDATE countries SET count_name=?, count_pop=?, count_area=?, "
                 + "count_language=?, count_timezone=?, count_currency=?, count_tld=?, "
                 + "cont_id=?, count_flag=? WHERE count_id=?";
@@ -373,9 +494,15 @@ public class Repository {
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            
+            
+            String encrypted = Util.encrypt(form.getPassword());
 
+            
+            System.out.println(encrypted);
+            
             statement.setString(1, form.getUsername());
-            statement.setString(2, form.getPassword());
+            statement.setString(2, encrypted);
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -386,10 +513,10 @@ public class Repository {
                 user.setUserType(resultSet.getInt("user_type"));
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
+        } 
 
         return user;
     }
