@@ -75,6 +75,28 @@ public class EditUser implements Initializable, ControlledScreen {
 
         cbUser.setItems(users);
 
+       /* cbUser.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                if (LoginController.loggedUser != null) {
+                    if (LoginController.loggedUser.getUserType() == 1) {
+
+                        for (User u : users) {
+                            if (u.getUserId() == LoginController.loggedUser.getUserId()) {
+                                loggedUser = u;
+                                break;
+                            }
+                        }
+                        cbUser.getSelectionModel().select(loggedUser);
+                        cbUser.setDisable(true);
+                    } else {
+                        cbUser.setDisable(false);
+
+                    }
+                }
+            }
+        });*/
         cebLvlUser.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 
             @Override
@@ -105,6 +127,14 @@ public class EditUser implements Initializable, ControlledScreen {
                         cebLvlUser.setSelected(false);
 
                     }
+                    /* if(t1.getUserType() == 0){
+                     users.clear();
+                     cbUser.setItems(users);
+                     users.add(LoginController.loggedUser);
+                        
+                     }else{
+                     refreshUser();
+                     }*/
                 }
 
             }
@@ -151,11 +181,28 @@ public class EditUser implements Initializable, ControlledScreen {
 
     @FXML
     public void newUser(ActionEvent e) {
-        User nUser = new User();
-        nUser.setUsername("New User");
+        List<User> users = CountryDemographics.service.getUsers();
+        boolean hasUser = false;
 
-        CountryDemographics.service.addUser(nUser);
-        refreshUser();
+        for (User u : users) {
+            if (u.getUsername().equals("New User")) {
+                hasUser = false;
+            } else {
+                hasUser = true;
+                break;
+            }
+        }
+
+        if (hasUser) {
+
+        } else {
+            User nUser = new User();
+            nUser.setUsername("New User");
+
+            CountryDemographics.service.addUser(nUser);
+            refreshUser();
+        }
+
         //TODO
         //TEST
     }

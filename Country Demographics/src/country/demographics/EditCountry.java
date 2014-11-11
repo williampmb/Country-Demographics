@@ -19,7 +19,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -28,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -271,19 +275,103 @@ public class EditCountry implements Initializable, ControlledScreen {
 
     @FXML
     public void saveChanges(ActionEvent e) {
+        Continent selectedContinent = (Continent) cbContinent.getSelectionModel().getSelectedItem();
+        List<Country> countries = CountryDemographics.service.getCountriesByContinentId(selectedContinent.getId());
 
-        if (!cbCountry.getSelectionModel().isEmpty()) {
-            currentCountry.setName(txtCountry.getText());
-            currentCountry.setPopulation(Long.valueOf(txtPop.getText()));
-            currentCountry.setArea(Integer.valueOf(txtArea.getText()));
-            currentCountry.setOfficialLanguage(txtOfficialL.getText());
-            currentCountry.setTimeZone(TimeZone.getTimeZone(txtTimeZone.getText()));
-            currentCountry.setCurrency(txtCurrency.getText());
-            currentCountry.setTLD(txtTLD.getText());
-            currentCountry.setFlag(txtPathFlag.getText());
-            displayFlag(currentCountry.getFlag());
+        boolean hasCountry = false;
 
-            CountryDemographics.service.updateCountry(currentCountry);
+        for (Country c : countries) {
+            if (c.getName().equals(txtCountry.getText())) {
+                hasCountry = true;
+                break;
+            } else {
+                hasCountry = false;
+
+            }
+        }
+
+        if (hasCountry) {
+            try {
+                ErroController.erro = "103: Country already exists";
+                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.setTitle("Erro");
+
+                stage.show();
+                stage.setResizable(false);
+
+            } catch (Exception ex) {
+                System.out.println("Problem to open.");
+            }
+        } else {
+            if (!cbCountry.getSelectionModel().isEmpty()) {
+                currentCountry.setName(txtCountry.getText());
+                currentCountry.setPopulation(Long.valueOf(txtPop.getText()));
+                currentCountry.setArea(Integer.valueOf(txtArea.getText()));
+                currentCountry.setOfficialLanguage(txtOfficialL.getText());
+                currentCountry.setTimeZone(TimeZone.getTimeZone(txtTimeZone.getText()));
+                currentCountry.setCurrency(txtCurrency.getText());
+                currentCountry.setTLD(txtTLD.getText());
+                currentCountry.setFlag(txtPathFlag.getText());
+                displayFlag(currentCountry.getFlag());
+
+                CountryDemographics.service.updateCountry(currentCountry);
+
+                countriesByContinentIdObservable.clear();
+                cbCountry.setItems(countriesByContinentIdObservable);
+
+                List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(currentContinent.getId());
+
+                for (Country c : countriesByContinentIdList) {
+                    countriesByContinentIdObservable.add(c);
+
+                }
+            }
+        }
+
+        
+    }
+
+    @FXML
+    public void newCountry(ActionEvent e) {
+        Continent selectedContinent = (Continent) cbContinent.getSelectionModel().getSelectedItem();
+        List<Country> countries = CountryDemographics.service.getCountriesByContinentId(selectedContinent.getId());
+
+        boolean hasCountry = false;
+
+        for (Country c : countries) {
+            if (c.getName().equals("New Country")) {
+                hasCountry = true;
+                break;
+            } else {
+                hasCountry = false;
+
+            }
+        }
+
+        if (hasCountry) {
+            try {
+                ErroController.erro = "101: New Country already created";
+                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.setTitle("Erro");
+
+                stage.show();
+                stage.setResizable(false);
+
+            } catch (Exception ex) {
+                System.out.println("Abriu About nao!");
+            }
+        } else {
+            clearFields();
+            Country nCountry = new Country();
+            nCountry.setName("New Country");
+            nCountry.setContinentId(currentContinent.getId());
+            nCountry = CountryDemographics.service.addCountry(nCountry);
 
             countriesByContinentIdObservable.clear();
             cbCountry.setItems(countriesByContinentIdObservable);
@@ -292,37 +380,16 @@ public class EditCountry implements Initializable, ControlledScreen {
 
             for (Country c : countriesByContinentIdList) {
                 countriesByContinentIdObservable.add(c);
+            }
+            cbCountry.setItems(countriesByContinentIdObservable);
 
+            for (Country c : countriesByContinentIdObservable) {
+                if (c.getId() == nCountry.getId()) {
+                    cbCountry.getSelectionModel().select(c);
+
+                }
             }
         }
-
-    }
-
-    @FXML
-    public void newCountry(ActionEvent e) {
-        clearFields();
-        Country nCountry = new Country();
-        nCountry.setName("New Country");
-        nCountry.setContinentId(currentContinent.getId());
-        nCountry = CountryDemographics.service.addCountry(nCountry);
-
-        countriesByContinentIdObservable.clear();
-        cbCountry.setItems(countriesByContinentIdObservable);
-
-        List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(currentContinent.getId());
-
-        for (Country c : countriesByContinentIdList) {
-            countriesByContinentIdObservable.add(c);
-        }
-        cbCountry.setItems(countriesByContinentIdObservable);
-
-        for (Country c : countriesByContinentIdObservable) {
-            if (c.getId() == nCountry.getId()) {
-                cbCountry.getSelectionModel().select(c);
-
-            }
-        }
-
     }
 
     @FXML
@@ -330,7 +397,8 @@ public class EditCountry implements Initializable, ControlledScreen {
 
         Country selectedItem = (Country) cbCountry.getSelectionModel().getSelectedItem();
         countriesByContinentIdObservable.remove(selectedItem);
-
+        CountryDemographics.service.deleteCountryById(count);
+        clearFields();
         //TODO
         // DELETE FROM DATABASE currentCountry
     }

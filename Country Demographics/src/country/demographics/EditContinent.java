@@ -17,11 +17,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -101,27 +105,95 @@ public class EditContinent implements Initializable, ControlledScreen {
         myController.setScreen(CountryDemographics.screen2ID);
         CountryDemographics.stage.setWidth(497 + 10);
         CountryDemographics.stage.setHeight(400);
+        refreshContinent();
+        txtContinent.clear();
     }
 
     @FXML
     public void saveChanges(ActionEvent e) {
-        Continent continentSelected = (Continent) cbContinent.getSelectionModel().getSelectedItem();
-        continentSelected.setName(txtContinent.getText());
+        boolean hasContinent = false;
 
-        CountryDemographics.service.updateContinent(continentSelected);
-        refreshContinent();
+        for (Continent c : continents) {
+            if (c.getName().equals(txtContinent.getText())) {
+                hasContinent = true;
+                break;
+            } else {
+                hasContinent = false;
+            }
+        }
 
+        if (hasContinent) {
+            try {
+                ErroController.erro = "203: Continent already exists";
+                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.setTitle("Erro");
+
+                stage.show();
+                stage.setResizable(false);
+
+            } catch (Exception ex) {
+                System.out.println("Problem to open.");
+            }
+        } else {
+            Continent continentSelected = (Continent) cbContinent.getSelectionModel().getSelectedItem();
+            continentSelected.setName(txtContinent.getText());
+
+            CountryDemographics.service.updateContinent(continentSelected);
+            refreshContinent();
+        }
+        /*Continent continentSelected = (Continent) cbContinent.getSelectionModel().getSelectedItem();
+         continentSelected.setName(txtContinent.getText());
+
+         CountryDemographics.service.updateContinent(continentSelected);
+         refreshContinent();*/
     }
 
     @FXML
     public void newContinent(ActionEvent e) {
-        Continent nContinent = new Continent();
-        nContinent.setName("New Continent");
+        boolean hasContinent = false;
 
-        CountryDemographics.service.addContinent(nContinent);
-        refreshContinent();
+        for (Continent c : continents) {
+            if (c.getName().equals("New Continent")) {
+                hasContinent = true;
+                break;
+            } else {
+                hasContinent = false;
+            }
+        }
 
-        //  cbContinent.getSelectionModel().select(nContinent);
+        if (hasContinent) {
+            try {
+                ErroController.erro = "201: Continent already exists";
+                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.setTitle("Erro");
+
+                stage.show();
+                stage.setResizable(false);
+
+            } catch (Exception ex) {
+                System.out.println("Problem to open.");
+            }
+        } else {
+            Continent nContinent = new Continent();
+            nContinent.setName("New Continent");
+
+            CountryDemographics.service.addContinent(nContinent);
+            continents.add(nContinent);
+            refreshContinent();
+
+            for (Continent c : continents) {
+                if (c.getName().equals("New Continent")) {
+                    cbContinent.getSelectionModel().select(c);
+                }
+            }
+        }
+
     }
 
     private void refreshContinent() {
@@ -134,7 +206,7 @@ public class EditContinent implements Initializable, ControlledScreen {
         }
 
         cbContinent.setItems(continents);
-        txtContinent.clear();
+
     }
 
     @FXML
@@ -144,6 +216,7 @@ public class EditContinent implements Initializable, ControlledScreen {
         continents.remove(selectedContinent);
         CountryDemographics.service.deleteContinentById(selectedContinent.getId());
         refreshContinent();
+        txtContinent.clear();
         //TODO
         // TEST
     }

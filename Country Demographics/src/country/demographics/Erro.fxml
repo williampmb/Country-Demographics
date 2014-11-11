@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="141.0" prefWidth="257.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.ErroController">
+  <children>
+    <Pane layoutX="0.0" layoutY="0.0" prefHeight="141.0" prefWidth="257.0">
+      <children>
+        <ImageView fx:id="ivErro" fitHeight="36.5" fitWidth="48.66667032476716" layoutX="52.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+        <Label fx:id="lErro" layoutX="129.0" layoutY="40.0" text="ErroMessage" />
+        <Button fx:id="btnClose" layoutX="101.0" layoutY="90.0" mnemonicParsing="false" onAction="#close" text="Close" />
+      </children>
+    </Pane>
+  </children>
+</AnchorPane>
