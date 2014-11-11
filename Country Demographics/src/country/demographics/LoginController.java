@@ -5,7 +5,6 @@
  */
 package country.demographics;
 
-
 import country.demographics.forms.User;
 import country.demographics.service.Service;
 import java.net.URL;
@@ -13,9 +12,6 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -27,13 +23,16 @@ import javafx.scene.control.TextField;
 public class LoginController implements Initializable, ControlledScreen {
 
     Service service;
-    
+
     ScreensController myController;
 
     @FXML
     TextField txtLogin;
     @FXML
     PasswordField pfPassword;
+    static final int zero = 0;
+
+    public static  User loggedUser = new User();
 
     /**
      * Initializes the controller class.
@@ -41,6 +40,7 @@ public class LoginController implements Initializable, ControlledScreen {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         service = new Service();
+        
     }
 
     @Override
@@ -50,20 +50,26 @@ public class LoginController implements Initializable, ControlledScreen {
 
     @FXML
     public void toGoScreen2(ActionEvent e) {
-       //TODO verify with database, and push the information from a user.
-        
+        //TODO verify with database, and push the information from a user.
+
         User user = new User();
         user.setUsername(txtLogin.getText());
         user.setPassword(pfPassword.getText());
-        
+
         User globalUser = service.validateUser(user);
-        
-        if(globalUser != null) {
-            
+
+        if (globalUser != null) {
+
             myController.setScreen(CountryDemographics.screen2ID);
-            CountryDemographics.stage.setWidth(497+10);
+            loggedUser = globalUser;
+            CountryDemographics.stage.setWidth(497 + 10);
             CountryDemographics.stage.setHeight(400);
-            
+
         }
     }
+
+    public User getLoggedUser() {
+        return loggedUser;
+    }
+
 }

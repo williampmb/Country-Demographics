@@ -7,6 +7,7 @@ package country.demographics;
 
 import country.demographics.forms.Continent;
 import country.demographics.forms.Country;
+import country.demographics.service.Service;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -75,10 +76,12 @@ public class EditContinent implements Initializable, ControlledScreen {
                 }
 
                 if (continents.isEmpty()) {
-                    cbContinent.setDisable(true);
+                    bntSave.setDisable(true);
+                    bntDelete.setDisable(true);
 
                 } else {
-                    cbContinent.setDisable(false);
+                    bntDelete.setDisable(false);
+                    bntSave.setDisable(false);
 
                 }
 
@@ -105,26 +108,44 @@ public class EditContinent implements Initializable, ControlledScreen {
         Continent continentSelected = (Continent) cbContinent.getSelectionModel().getSelectedItem();
         continentSelected.setName(txtContinent.getText());
 
-        //TODO
-        // UPDATE IN DATABASE CONTINENT NAME!
+        CountryDemographics.service.updateContinent(continentSelected);
+        refreshContinent();
+
     }
 
     @FXML
     public void newContinent(ActionEvent e) {
-        // Continent nContinent = Create a new Continent in Database name: "New Continent"
-        // continents.add(nContinent);
-        //cbContinent.getSelectionModel().select(nCont);
+        Continent nContinent = new Continent();
+        nContinent.setName("New Continent");
 
+        CountryDemographics.service.addContinent(nContinent);
+        refreshContinent();
+
+        //  cbContinent.getSelectionModel().select(nContinent);
     }
-    
+
+    private void refreshContinent() {
+        continents.clear();
+        cbContinent.setItems(continents);
+        List<Continent> continents1 = CountryDemographics.service.getContinents();
+
+        for (Continent c : continents1) {
+            continents.add(c);
+        }
+
+        cbContinent.setItems(continents);
+        txtContinent.clear();
+    }
+
     @FXML
     public void delete(ActionEvent e) {
 
-        Continent selectedContinent =  (Continent) cbContinent.getSelectionModel().getSelectedItem();
+        Continent selectedContinent = (Continent) cbContinent.getSelectionModel().getSelectedItem();
         continents.remove(selectedContinent);
-
+        CountryDemographics.service.deleteContinentById(selectedContinent.getId());
+        refreshContinent();
         //TODO
-        // DELETE FROM DATABASE selectedContinent
+        // TEST
     }
 
 }
