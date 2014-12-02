@@ -21,6 +21,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -76,8 +78,6 @@ public class Screen2Controller implements Initializable, ControlledScreen {
     ListView lvSearch;
     @FXML
     MenuItem miEditUser;
-    @FXML
-            Menu Edit;
 
     Country currentCountry;
     int count = 0;
@@ -98,13 +98,16 @@ public class Screen2Controller implements Initializable, ControlledScreen {
 
         }
 
-       
-            
+        if (cbContinent.getSelectionModel().getSelectedItem() == null) {
+            cbCountry.setDisable(true);
+        }
+
         cbContinent.setItems(continents);
         txtSearch.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 countriesSearch.clear();
+                lvSearch.setOpacity(1);
                 lvSearch.setItems(countriesSearch);
                 String text = txtSearch.getText();
 
@@ -127,7 +130,6 @@ public class Screen2Controller implements Initializable, ControlledScreen {
                         lvSearch.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
                             @Override
                             public void changed(ObservableValue<? extends Country> ov, Country t, Country t1) {
-                                System.out.println("teste");
                                 try {
                                     int continentId = t1.getContinentId();
                                     Continent continentById = CountryDemographics.service.getContinentById(continentId);
@@ -161,7 +163,6 @@ public class Screen2Controller implements Initializable, ControlledScreen {
                     List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(t1.getId());
 
                     for (Country c : countriesByContinentIdList) {
-                        System.out.println(c.toString());
                         countriesByContinentIdObservable.add(c);
 
                     }
@@ -174,6 +175,8 @@ public class Screen2Controller implements Initializable, ControlledScreen {
 
                     }
 
+                } else {
+                    cbCountry.setDisable(true);
                 }
 
             }
@@ -219,6 +222,7 @@ public class Screen2Controller implements Initializable, ControlledScreen {
         lbCurrency.setText("");
         lbTLD.setText("");
         displayFlag("");
+
     }
 
     private void displayFlag(String path) {
@@ -264,11 +268,11 @@ public class Screen2Controller implements Initializable, ControlledScreen {
         CountryDemographics.stage.setWidth(311 + 10);
         CountryDemographics.stage.setHeight(200 + 40);
 
-        int countrySelectedIndex = cbCountry.getSelectionModel().getSelectedIndex();
-        cbCountry.getSelectionModel().clearSelection(countrySelectedIndex);
+        cbCountry.getSelectionModel().clearSelection();
 
-        int continentSelectedIndex = cbContinent.getSelectionModel().getSelectedIndex();
-        cbContinent.getSelectionModel().clearSelection(continentSelectedIndex);
+        cbContinent.getSelectionModel().clearSelection();
+        txtSearch.clear();
+        lvSearch.setOpacity(0);
 
     }
 
@@ -278,11 +282,11 @@ public class Screen2Controller implements Initializable, ControlledScreen {
         CountryDemographics.stage.setWidth(330 + 10);
         CountryDemographics.stage.setHeight(250 + 40);
 
-        int countrySelectedIndex = cbCountry.getSelectionModel().getSelectedIndex();
-        cbCountry.getSelectionModel().clearSelection(countrySelectedIndex);
+        cbCountry.getSelectionModel().clearSelection();
 
-        int continentSelectedIndex = cbContinent.getSelectionModel().getSelectedIndex();
-        cbContinent.getSelectionModel().clearSelection(continentSelectedIndex);
+        cbContinent.getSelectionModel().clearSelection();
+        txtSearch.clear();
+        lvSearch.setOpacity(0);
 
     }
 
@@ -300,21 +304,24 @@ public class Screen2Controller implements Initializable, ControlledScreen {
         } catch (Exception ex) {
             System.out.println("Abriu About nao!");
         }
+        txtSearch.clear();
+        lvSearch.setOpacity(0);
 
     }
 
     @FXML
     public void toGoEditCountry(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen4ID);
+
         CountryDemographics.stage.setWidth(330 + 10);
+
         CountryDemographics.stage.setHeight(590 + 40);
 
-        int countrySelectedIndex = cbCountry.getSelectionModel().getSelectedIndex();
-        cbCountry.getSelectionModel().clearSelection(countrySelectedIndex);
+        cbCountry.getSelectionModel().clearSelection();
 
-        int continentSelectedIndex = cbContinent.getSelectionModel().getSelectedIndex();
-        cbContinent.getSelectionModel().clearSelection(continentSelectedIndex);
-
+        cbContinent.getSelectionModel().clearSelection();
+        txtSearch.clear();
+        lvSearch.setOpacity(0);
     }
 
     public void refreshChoiceBox() {

@@ -499,7 +499,7 @@ public class Repository {
             String encrypted = Util.encrypt(form.getPassword());
 
             
-            System.out.println(encrypted);
+          //  System.out.println(encrypted);
             
             statement.setString(1, form.getUsername());
             statement.setString(2, encrypted);
@@ -538,5 +538,9 @@ public class Repository {
         }
         
         return -1;
+    }
+
+    public boolean updateUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet. TODO"); //To change body of generated methods, choose Tools | Templates.
     }
 }

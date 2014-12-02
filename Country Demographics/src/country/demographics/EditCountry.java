@@ -104,23 +104,30 @@ public class EditCountry implements Initializable, ControlledScreen {
         }
 
         cbContinent.setItems(continents);
+        if (cbContinent.getSelectionModel().getSelectedItem() == null) {
+            cbCountry.setDisable(true);
+        }
 
         cbContinent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Continent>() {
 
             @Override
             public void changed(ObservableValue<? extends Continent> ov, Continent t, Continent t1) {
                 lastContinent = t;
-                currentContinent = t1;
 
-                countriesByContinentIdObservable.clear();
-                cbCountry.setItems(countriesByContinentIdObservable);
+                if (t1 != null) {
+                    currentContinent = t1;
 
-                List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(t1.getId());
+                    countriesByContinentIdObservable.clear();
+                    cbCountry.setItems(countriesByContinentIdObservable);
 
-                for (Country c : countriesByContinentIdList) {
-                    countriesByContinentIdObservable.add(c);
+                    List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(t1.getId());
 
+                    for (Country c : countriesByContinentIdList) {
+                        countriesByContinentIdObservable.add(c);
+
+                    }
                 }
+
                 if (countriesByContinentIdObservable.isEmpty()) {
 
                     cbCountry.setDisable(true);
@@ -149,8 +156,8 @@ public class EditCountry implements Initializable, ControlledScreen {
                     bntBrowse.setDisable(false);
 
                 }
-
             }
+
         });
 
         //Listener that observes the Continent Choice Box.
@@ -243,10 +250,12 @@ public class EditCountry implements Initializable, ControlledScreen {
     @FXML
     public void toGoScreen2(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen2ID);
-        Screen2Controller c;
         myController.getScreen(CountryDemographics.screen2ID);
         CountryDemographics.stage.setWidth(497 + 10);
         CountryDemographics.stage.setHeight(400);
+        cbContinent.getSelectionModel().clearSelection();
+
+        cbCountry.getSelectionModel().clearSelection();
 
     }
 
@@ -275,12 +284,11 @@ public class EditCountry implements Initializable, ControlledScreen {
 
     @FXML
     public void saveChanges(ActionEvent e) {
-        Continent selectedContinent = (Continent) cbContinent.getSelectionModel().getSelectedItem();
-        List<Country> countries = CountryDemographics.service.getCountriesByContinentId(selectedContinent.getId());
-
+        Continent selectedItem = (Continent) cbContinent.getSelectionModel().getSelectedItem();
+        List<Country> countriesByContinentId = CountryDemographics.service.getCountriesByContinentId(selectedItem.getId());
         boolean hasCountry = false;
 
-        for (Country c : countries) {
+        for (Country c : countriesByContinentId) {
             if (c.getName().equals(txtCountry.getText())) {
                 hasCountry = true;
                 break;
@@ -331,7 +339,6 @@ public class EditCountry implements Initializable, ControlledScreen {
             }
         }
 
-        
     }
 
     @FXML
@@ -389,6 +396,7 @@ public class EditCountry implements Initializable, ControlledScreen {
 
                 }
             }
+            cbCountry.setDisable(false);
         }
     }
 
@@ -397,10 +405,13 @@ public class EditCountry implements Initializable, ControlledScreen {
 
         Country selectedItem = (Country) cbCountry.getSelectionModel().getSelectedItem();
         countriesByContinentIdObservable.remove(selectedItem);
-        CountryDemographics.service.deleteCountryById(count);
+        CountryDemographics.service.deleteCountryById(selectedItem.getId());
         clearFields();
-        //TODO
-        // DELETE FROM DATABASE currentCountry
+        Continent selectedItem1 = (Continent) cbContinent.getSelectionModel().getSelectedItem();
+        List<Country> countriesByContinentId = CountryDemographics.service.getCountriesByContinentId(selectedItem1.getId());
+        if (countriesByContinentId.isEmpty()) {
+            cbCountry.setDisable(true);
+        }
     }
 
 }

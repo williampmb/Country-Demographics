@@ -189,7 +189,7 @@ public class Service {
     
     @Deprecated
     public boolean updateUser(final User user) {
-        return false;
+        return repository.updateUser(user);
     }    
     
     /**

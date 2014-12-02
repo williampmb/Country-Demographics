@@ -18,7 +18,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -26,6 +29,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -75,28 +79,29 @@ public class EditUser implements Initializable, ControlledScreen {
 
         cbUser.setItems(users);
 
-       /* cbUser.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 
-            @Override
-            public void handle(MouseEvent t) {
-                if (LoginController.loggedUser != null) {
-                    if (LoginController.loggedUser.getUserType() == 1) {
+        /* cbUser.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 
-                        for (User u : users) {
-                            if (u.getUserId() == LoginController.loggedUser.getUserId()) {
-                                loggedUser = u;
-                                break;
-                            }
-                        }
-                        cbUser.getSelectionModel().select(loggedUser);
-                        cbUser.setDisable(true);
-                    } else {
-                        cbUser.setDisable(false);
+         @Override
+         public void handle(MouseEvent t) {
+         if (LoginController.loggedUser != null) {
+         if (LoginController.loggedUser.getUserType() == 1) {
 
-                    }
-                }
-            }
-        });*/
+         for (User u : users) {
+         if (u.getUserId() == LoginController.loggedUser.getUserId()) {
+         loggedUser = u;
+         break;
+         }
+         }
+         cbUser.getSelectionModel().select(loggedUser);
+         cbUser.setDisable(true);
+         } else {
+         cbUser.setDisable(false);
+
+         }
+         }
+         }
+         });*/
         cebLvlUser.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 
             @Override
@@ -158,30 +163,59 @@ public class EditUser implements Initializable, ControlledScreen {
 
     @FXML
     public void saveChanges(ActionEvent e) {
+        boolean hasUser = false;
 
-        User userSelected = (User) cbUser.getSelectionModel().getSelectedItem();
-        userSelected.setUsername(txtLogin.getText());
-        if (!txtNewPassword.getText().equals("")) {
-            if (txtNewPassword.getText().equals(txtNewPassword2.getText())) {
-                userSelected.setPassword(txtNewPassword.getText());
+        for (User u : users) {
+            if (u.getUsername().equals(txtLogin.getText())) {
+                hasUser = true;
+                break;
+            } else {
+                hasUser = false;
+                
             }
-
         }
-        boolean selected = cebLvlUser.isSelected();
-        if (selected) {
-            userSelected.setUserType(1);
+
+        if (hasUser) {
+            try {
+                ErroController.erro = "303: User already exists";
+                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.setTitle("Erro");
+
+                stage.show();
+                stage.setResizable(false);
+
+            } catch (Exception ex) {
+                System.out.println("Problem to open.");
+            }
         } else {
-            userSelected.setUserType(0);
+            User userSelected = (User) cbUser.getSelectionModel().getSelectedItem();
+            userSelected.setUsername(txtLogin.getText());
+            if (!txtNewPassword.getText().equals("")) {
+                if (txtNewPassword.getText().equals(txtNewPassword2.getText())) {
+                    userSelected.setPassword(txtNewPassword.getText());
+                }
+
+            }
+            boolean selected = cebLvlUser.isSelected();
+            if (selected) {
+                userSelected.setUserType(1);
+            } else {
+                userSelected.setUserType(0);
+            }
+            
+            CountryDemographics.service.updateUser(userSelected);
+            refreshUser();
         }
 
         //TODO 
         // CountryDemographics.service.updateUser(userSelected);
-        refreshUser();
     }
 
     @FXML
     public void newUser(ActionEvent e) {
-        List<User> users = CountryDemographics.service.getUsers();
         boolean hasUser = false;
 
         for (User u : users) {
@@ -194,7 +228,20 @@ public class EditUser implements Initializable, ControlledScreen {
         }
 
         if (hasUser) {
+            try {
+                ErroController.erro = "301: User already exists";
+                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.setTitle("Erro");
 
+                stage.show();
+                stage.setResizable(false);
+
+            } catch (Exception ex) {
+                System.out.println("Problem to open.");
+            }
         } else {
             User nUser = new User();
             nUser.setUsername("New User");

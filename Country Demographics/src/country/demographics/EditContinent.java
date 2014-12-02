@@ -144,11 +144,7 @@ public class EditContinent implements Initializable, ControlledScreen {
             CountryDemographics.service.updateContinent(continentSelected);
             refreshContinent();
         }
-        /*Continent continentSelected = (Continent) cbContinent.getSelectionModel().getSelectedItem();
-         continentSelected.setName(txtContinent.getText());
 
-         CountryDemographics.service.updateContinent(continentSelected);
-         refreshContinent();*/
     }
 
     @FXML
@@ -192,7 +188,9 @@ public class EditContinent implements Initializable, ControlledScreen {
                     cbContinent.getSelectionModel().select(c);
                 }
             }
+
         }
+        refreshContinent();
 
     }
 
@@ -213,12 +211,28 @@ public class EditContinent implements Initializable, ControlledScreen {
     public void delete(ActionEvent e) {
 
         Continent selectedContinent = (Continent) cbContinent.getSelectionModel().getSelectedItem();
-        continents.remove(selectedContinent);
-        CountryDemographics.service.deleteContinentById(selectedContinent.getId());
-        refreshContinent();
-        txtContinent.clear();
-        //TODO
-        // TEST
+        List<Country> countriesByContinentId = CountryDemographics.service.getCountriesByContinentId(selectedContinent.getId());
+        if (countriesByContinentId.isEmpty()) {
+            continents.remove(selectedContinent);
+            CountryDemographics.service.deleteContinentById(selectedContinent.getId());
+            refreshContinent();
+            txtContinent.clear();
+        } else {
+            try {
+                ErroController.erro = "205: Can't delete Continent with registered Countries.";
+                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.setTitle("Erro");
+
+                stage.show();
+                stage.setResizable(false);
+
+            } catch (Exception ex) {
+                System.out.println("Problem to open.");
+            }
+        }
     }
 
 }

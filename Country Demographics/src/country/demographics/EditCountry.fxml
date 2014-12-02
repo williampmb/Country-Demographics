@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="497.0" prefWidth="322.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.EditCountry">
+<AnchorPane id="AnchorPane" fx:id="apCountry" prefHeight="497.0" prefWidth="322.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.EditCountry">
   <children>
     <Pane prefHeight="200.0" prefWidth="315.0" AnchorPane.bottomAnchor="5.02" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-5.02">
       <children>
@@ -39,16 +39,48 @@
         </ChoiceBox>
         <Pane layoutX="0.0" layoutY="110.0" prefHeight="323.97998046875" prefWidth="322.0">
           <children>
-            <TextField id="txtContinent" fx:id="txtCountry" layoutX="68.0" layoutY="14.0" prefWidth="186.0" promptText="Name" />
+            <TextField id="txtContinent" fx:id="txtCountry" layoutX="68.0" layoutY="14.0" prefWidth="186.0" promptText="Name">
+              <tooltip>
+                <Tooltip text="Country" />
+              </tooltip>
+            </TextField>
             <VBox layoutX="33.0" layoutY="47.0" prefHeight="253.0" prefWidth="127.5" spacing="15.0">
               <children>
-                <TextField fx:id="txtPop" prefWidth="113.0" promptText="Population" />
-                <TextField fx:id="txtArea" prefWidth="113.0" promptText="Area" />
-                <TextField fx:id="txtOfficialL" prefWidth="113.0" promptText="Oficial Language" />
-                <TextField fx:id="txtTimeZone" prefWidth="113.0" promptText="Time Zone" />
-                <TextField fx:id="txtCurrency" prefWidth="113.0" promptText="Currency" />
-                <TextField fx:id="txtTLD" prefWidth="113.0" promptText="TLD" />
-                <TextField fx:id="txtPathFlag" prefWidth="113.0" promptText="Path Flag" />
+                <TextField fx:id="txtPop" prefWidth="113.0" promptText="Population">
+                  <tooltip>
+                    <Tooltip text="Population" />
+                  </tooltip>
+                </TextField>
+                <TextField fx:id="txtArea" prefWidth="113.0" promptText="Area">
+                  <tooltip>
+                    <Tooltip text="Area" />
+                  </tooltip>
+                </TextField>
+                <TextField fx:id="txtOfficialL" prefWidth="113.0" promptText="Official Language">
+                  <tooltip>
+                    <Tooltip text="Official Language" />
+                  </tooltip>
+                </TextField>
+                <TextField fx:id="txtTimeZone" prefWidth="113.0" promptText="Time Zone">
+                  <tooltip>
+                    <Tooltip text="Time Zone" />
+                  </tooltip>
+                </TextField>
+                <TextField fx:id="txtCurrency" prefWidth="113.0" promptText="Currency">
+                  <tooltip>
+                    <Tooltip text="Currency" />
+                  </tooltip>
+                </TextField>
+                <TextField fx:id="txtTLD" prefWidth="113.0" promptText="TLD">
+                  <tooltip>
+                    <Tooltip text="TLD" />
+                  </tooltip>
+                </TextField>
+                <TextField fx:id="txtPathFlag" prefWidth="113.0" promptText="Path Flag">
+                  <tooltip>
+                    <Tooltip text="Path Flag" />
+                  </tooltip>
+                </TextField>
               </children>
             </VBox>
             <ImageView fx:id="ivFlag" fitHeight="128.0" fitWidth="128.0" layoutX="174.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" />

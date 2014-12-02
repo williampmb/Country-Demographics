@@ -62,8 +62,8 @@ public class LoginController implements Initializable, ControlledScreen {
 
             myController.setScreen(CountryDemographics.screen2ID);
             loggedUser = globalUser;
-            CountryDemographics.stage.setWidth(497 + 10);
-            CountryDemographics.stage.setHeight(400);
+            CountryDemographics.stage.setWidth(497 + 5);
+            CountryDemographics.stage.setHeight(450);
 
         }
     }
