@@ -106,8 +106,8 @@ public class EditUser implements Initializable, ControlledScreen {
 
             @Override
             public void handle(MouseEvent t) {
-                if (LoginController.loggedUser != null) {
-                    if (LoginController.loggedUser.getUserType() == 1) {
+                if (LoginController.currentUser != null) {
+                    if (LoginController.currentUser.getUserType() == 1) {
                         cebLvlUser.setDisable(false);
                     } else {
                         cebLvlUser.setDisable(true);
@@ -177,8 +177,8 @@ public class EditUser implements Initializable, ControlledScreen {
 
         if (hasUser) {
             try {
-                ErroController.erro = "303: User already exists";
-                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
+                ErrorController.error = "303: User already exists";
+                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Error.fxml"));
                 Stage stage = new Stage();
                 Scene scene = new Scene(parent);
                 stage.setScene(scene);
@@ -229,7 +229,7 @@ public class EditUser implements Initializable, ControlledScreen {
 
         if (hasUser) {
             try {
-                ErroController.erro = "301: User already exists";
+                ErrorController.error = "301: User already exists";
                 Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
                 Stage stage = new Stage();
                 Scene scene = new Scene(parent);

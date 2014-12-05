@@ -21,11 +21,11 @@ import javafx.stage.Window;
  *
  * @author williampmb
  */
-public class ErroController implements Initializable {
+public class ErrorController implements Initializable {
     
-    static String erro = "erro";
+    static String error = "error";
     @FXML
-    Label lErro;
+    Label lError;
     @FXML
     Button btnClose;
     /**
@@ -33,7 +33,7 @@ public class ErroController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lErro.setText(erro);
+        lError.setText(error);
     } 
     
     @FXML
@@ -41,5 +41,4 @@ public class ErroController implements Initializable {
         Stage erro = (Stage) btnClose.getScene().getWindow();
         erro.close();
     }
-    
 }

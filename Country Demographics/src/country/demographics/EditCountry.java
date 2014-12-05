@@ -19,19 +19,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -40,15 +35,10 @@ import javafx.stage.Stage;
  */
 public class EditCountry implements Initializable, ControlledScreen {
 
-    ScreensController myController;
-
-    ObservableList<Country> countries = FXCollections.observableArrayList();
-
     @FXML
     ChoiceBox cbCountry;
     @FXML
     ChoiceBox cbContinent;
-
     @FXML
     TextField txtCountry;
     @FXML
@@ -66,18 +56,20 @@ public class EditCountry implements Initializable, ControlledScreen {
     @FXML
     TextField txtPathFlag;
     @FXML
-    Button bntSave;
+    Button btnNew;
     @FXML
-    Button bntDelete;
+    Button btnSave;
     @FXML
-    Button bntBrowse;
-
+    Button btnDelete;
+    @FXML
+    Button btnBrowse;
     @FXML
     ImageView ivFlag;
-
     @FXML
     Label lbMessage;
 
+    ScreensController myController;
+    ObservableList<Country> countries = FXCollections.observableArrayList();
     Country currentCountry = null;
     Country lastCountry = null;
     Continent currentContinent = null;
@@ -86,21 +78,22 @@ public class EditCountry implements Initializable, ControlledScreen {
     ObservableList<Country> countriesByContinentIdObservable = FXCollections.observableArrayList();
     ObservableList<Continent> continents = FXCollections.observableArrayList();
 
-    int count = 0;
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        bntSave.setDisable(true);
-        bntDelete.setDisable(true);
+        
+        btnNew.setDisable(true);
+        btnSave.setDisable(true);
+        btnDelete.setDisable(true);
+        btnBrowse.setDisable(true);
+        disableFields();
         lbMessage.setText("");
         List<Continent> continents1 = CountryDemographics.service.getContinents();
 
         for (Continent c : continents1) {
             continents.add(c);
-
         }
 
         cbContinent.setItems(continents);
@@ -108,14 +101,19 @@ public class EditCountry implements Initializable, ControlledScreen {
             cbCountry.setDisable(true);
         }
 
+        /**
+         * Listener for continent box
+         */
         cbContinent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Continent>() {
 
             @Override
             public void changed(ObservableValue<? extends Continent> ov, Continent t, Continent t1) {
+                
                 lastContinent = t;
 
                 if (t1 != null) {
                     currentContinent = t1;
+                    btnNew.setDisable(false);
 
                     countriesByContinentIdObservable.clear();
                     cbCountry.setItems(countriesByContinentIdObservable);
@@ -131,58 +129,53 @@ public class EditCountry implements Initializable, ControlledScreen {
                 if (countriesByContinentIdObservable.isEmpty()) {
 
                     cbCountry.setDisable(true);
-                    bntSave.setDisable(true);
-                    bntDelete.setDisable(true);
-                    bntBrowse.setDisable(true);
+                    btnSave.setDisable(true);
+                    btnDelete.setDisable(true);
+                    btnBrowse.setDisable(true);
 
                 } else {
                     cbCountry.setDisable(false);
-                    bntSave.setDisable(false);
-                    bntDelete.setDisable(false);
-                    bntBrowse.setDisable(false);
+                    btnSave.setDisable(false);
+                    btnDelete.setDisable(false);
+                    btnBrowse.setDisable(false);
 
                     cbCountry.setItems(countriesByContinentIdObservable);
-
                 }
 
                 if (cbCountry.getSelectionModel().getSelectedItem() == null) {
-                    bntSave.setDisable(true);
-                    bntDelete.setDisable(true);
-                    bntBrowse.setDisable(true);
+                    btnSave.setDisable(true);
+                    btnDelete.setDisable(true);
+                    btnBrowse.setDisable(true);
 
                 } else {
-                    bntSave.setDisable(false);
-                    bntDelete.setDisable(false);
-                    bntBrowse.setDisable(false);
-
+                    btnSave.setDisable(false);
+                    btnDelete.setDisable(false);
+                    btnBrowse.setDisable(false);
                 }
             }
 
         });
 
-        //Listener that observes the Continent Choice Box.
+        /**
+         * Listener that observes the Country Choice Box.
+         */
         cbCountry.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
 
             @Override
             public void changed(ObservableValue<? extends Country> ov, Country t, Country t1) {
+                System.out.println("country box changed...");
                 lastCountry = t;
                 if (t1 != null) {
                     currentCountry = t1;
+                    enableFields();
 
                     txtCountry.setText(t1.getName());
-
                     txtPop.setText(String.valueOf(t1.getPopulation()));
-
                     txtArea.setText(Integer.toString(t1.getArea()));
-
                     txtOfficialL.setText(t1.getOfficialLanguage());
-
                     txtTimeZone.setText(t1.getTimeZone().getID());
-
                     txtCurrency.setText(t1.getCurrency());
-
                     txtTLD.setText(t1.getTLD());
-
                     txtPathFlag.setText(t1.getFlag());
                     displayFlag(t1.getFlag());
 
@@ -191,21 +184,41 @@ public class EditCountry implements Initializable, ControlledScreen {
                 }
 
                 if (cbCountry.getSelectionModel().getSelectedItem() == null) {
-
-                    bntSave.setDisable(true);
-                    bntDelete.setDisable(true);
-                    bntBrowse.setDisable(true);
-
+                    disableFields();
+                    btnSave.setDisable(true);
+                    btnDelete.setDisable(true);
+                    btnBrowse.setDisable(true);
                 } else {
-                    bntSave.setDisable(false);
-                    bntDelete.setDisable(false);
-                    bntBrowse.setDisable(false);
-
+                    btnSave.setDisable(false);
+                    btnDelete.setDisable(false);
+                    btnBrowse.setDisable(false);
                 }
 
             }
         });
 
+    }
+    
+    private void disableFields() {
+        txtCountry.setDisable(true);
+        txtPop.setDisable(true);
+        txtArea.setDisable(true);
+        txtOfficialL.setDisable(true);
+        txtTimeZone.setDisable(true);
+        txtTLD.setDisable(true);
+        txtCurrency.setDisable(true);
+        txtPathFlag.setDisable(true);
+    }
+    
+    private void enableFields() {
+        txtCountry.setDisable(false);
+        txtPop.setDisable(false);
+        txtArea.setDisable(false);
+        txtOfficialL.setDisable(false);
+        txtTimeZone.setDisable(false);
+        txtTLD.setDisable(false);
+        txtCurrency.setDisable(false);
+        txtPathFlag.setDisable(false);
     }
 
     private void displayFlag(String path) {
@@ -222,7 +235,6 @@ public class EditCountry implements Initializable, ControlledScreen {
                 lbMessage.setVisible(false);
             } else {
                 ivFlag.setVisible(true);
-
             }
 
             ivFlag.setVisible(false);
@@ -244,7 +256,6 @@ public class EditCountry implements Initializable, ControlledScreen {
     @Override
     public void setScreenParent(ScreensController screenPage) {
         myController = screenPage;
-
     }
 
     @FXML
@@ -256,7 +267,15 @@ public class EditCountry implements Initializable, ControlledScreen {
         cbContinent.getSelectionModel().clearSelection();
 
         cbCountry.getSelectionModel().clearSelection();
-
+        
+        // disable everything except 'Back' and ContinentBox
+        clearFields();
+        disableFields();        
+        cbCountry.setDisable(true);
+        btnNew.setDisable(true);
+        btnSave.setDisable(true);
+        btnDelete.setDisable(true);
+        btnBrowse.setDisable(true);
     }
 
     @FXML
@@ -282,6 +301,7 @@ public class EditCountry implements Initializable, ControlledScreen {
         }
     }
 
+    
     @FXML
     public void saveChanges(ActionEvent e) {
         Continent selectedItem = (Continent) cbContinent.getSelectionModel().getSelectedItem();
@@ -292,53 +312,36 @@ public class EditCountry implements Initializable, ControlledScreen {
             if (c.getName().equals(txtCountry.getText())) {
                 hasCountry = true;
                 break;
-            } else {
-                hasCountry = false;
-
-            }
+            } 
         }
 
-        if (hasCountry) {
-            try {
-                ErroController.erro = "103: Country already exists";
-                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(parent);
-                stage.setScene(scene);
-                stage.setTitle("Erro");
+        if (hasCountry && !((Country) cbCountry.getSelectionModel().getSelectedItem()).getName()
+                .equals(txtCountry.getText())) {     
+            ErrorMessage msg = new ErrorMessage("103: Country already exists", this);
+            msg.show();
+            
+        } else if (!cbCountry.getSelectionModel().isEmpty()) {
+            currentCountry.setName(txtCountry.getText());
+            currentCountry.setPopulation(Long.valueOf(txtPop.getText()));
+            currentCountry.setArea(Integer.valueOf(txtArea.getText()));
+            currentCountry.setOfficialLanguage(txtOfficialL.getText());
+            currentCountry.setTimeZone(TimeZone.getTimeZone(txtTimeZone.getText()));
+            currentCountry.setCurrency(txtCurrency.getText());
+            currentCountry.setTLD(txtTLD.getText());
+            currentCountry.setFlag(txtPathFlag.getText());
+            displayFlag(currentCountry.getFlag());
 
-                stage.show();
-                stage.setResizable(false);
+            CountryDemographics.service.updateCountry(currentCountry);
 
-            } catch (Exception ex) {
-                System.out.println("Problem to open.");
-            }
-        } else {
-            if (!cbCountry.getSelectionModel().isEmpty()) {
-                currentCountry.setName(txtCountry.getText());
-                currentCountry.setPopulation(Long.valueOf(txtPop.getText()));
-                currentCountry.setArea(Integer.valueOf(txtArea.getText()));
-                currentCountry.setOfficialLanguage(txtOfficialL.getText());
-                currentCountry.setTimeZone(TimeZone.getTimeZone(txtTimeZone.getText()));
-                currentCountry.setCurrency(txtCurrency.getText());
-                currentCountry.setTLD(txtTLD.getText());
-                currentCountry.setFlag(txtPathFlag.getText());
-                displayFlag(currentCountry.getFlag());
+            countriesByContinentIdObservable.clear();
+            cbCountry.setItems(countriesByContinentIdObservable);
 
-                CountryDemographics.service.updateCountry(currentCountry);
+            List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(currentContinent.getId());
 
-                countriesByContinentIdObservable.clear();
-                cbCountry.setItems(countriesByContinentIdObservable);
-
-                List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(currentContinent.getId());
-
-                for (Country c : countriesByContinentIdList) {
-                    countriesByContinentIdObservable.add(c);
-
-                }
+            for (Country c : countriesByContinentIdList) {
+                countriesByContinentIdObservable.add(c);
             }
         }
-
     }
 
     @FXML
@@ -352,50 +355,40 @@ public class EditCountry implements Initializable, ControlledScreen {
             if (c.getName().equals("New Country")) {
                 hasCountry = true;
                 break;
-            } else {
-                hasCountry = false;
-
-            }
+            } 
         }
 
         if (hasCountry) {
-            try {
-                ErroController.erro = "101: New Country already created";
-                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(parent);
-                stage.setScene(scene);
-                stage.setTitle("Erro");
+            
+            ErrorMessage msg = new ErrorMessage("101: New Country already created", this);
+            msg.show();
 
-                stage.show();
-                stage.setResizable(false);
-
-            } catch (Exception ex) {
-                System.out.println("Abriu About nao!");
-            }
         } else {
             clearFields();
             Country nCountry = new Country();
             nCountry.setName("New Country");
             nCountry.setContinentId(currentContinent.getId());
+            nCountry.setArea(0);
+            nCountry.setTLD("");
             nCountry = CountryDemographics.service.addCountry(nCountry);
 
+            // update list of countries
             countriesByContinentIdObservable.clear();
             cbCountry.setItems(countriesByContinentIdObservable);
-
             List<Country> countriesByContinentIdList = CountryDemographics.service.getCountriesByContinentId(currentContinent.getId());
-
             for (Country c : countriesByContinentIdList) {
                 countriesByContinentIdObservable.add(c);
             }
             cbCountry.setItems(countriesByContinentIdObservable);
 
+            // select newly created country
             for (Country c : countriesByContinentIdObservable) {
                 if (c.getId() == nCountry.getId()) {
                     cbCountry.getSelectionModel().select(c);
-
+                    break;
                 }
             }
+            
             cbCountry.setDisable(false);
         }
     }
@@ -407,11 +400,16 @@ public class EditCountry implements Initializable, ControlledScreen {
         countriesByContinentIdObservable.remove(selectedItem);
         CountryDemographics.service.deleteCountryById(selectedItem.getId());
         clearFields();
+        disableFields();
+        btnSave.setDisable(true);
+        btnDelete.setDisable(true);
+        btnBrowse.setDisable(true);
+        
+        // check if there are any countries left. If there aren't, disable Country Dropdown
         Continent selectedItem1 = (Continent) cbContinent.getSelectionModel().getSelectedItem();
         List<Country> countriesByContinentId = CountryDemographics.service.getCountriesByContinentId(selectedItem1.getId());
         if (countriesByContinentId.isEmpty()) {
             cbCountry.setDisable(true);
         }
     }
-
 }

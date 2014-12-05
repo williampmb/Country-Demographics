@@ -52,6 +52,7 @@ public class ServiceTest {
         Country country = new Country();
         
         country.setName("test");
+        country.setTLD("");
         
         Country newcount = service.addCountry(country);
         assertTrue(service.deleteCountryById(newcount.getId()));
@@ -103,6 +104,12 @@ public class ServiceTest {
     @Test
     public void test_getLastId() {
         service.getLastId();
+    }
+    
+    @Test
+    public void test_getUserById() {
+        int id = 1;
+        assertNotNull(service.getUserById(id));
     }
     
     @Test
@@ -173,6 +180,28 @@ public class ServiceTest {
         assertEquals(area,service.getCountryById(1).getArea());
     }
     
+    @Test
+    public void test_updateUser() {
+        User user = service.getUsers().get(0);
+        
+        String origName = user.getUsername();
+        
+        String newName = "asdfasdfasdf";
+        
+        user.setUsername(newName);
+        
+        assertTrue( service.updateUser(user));
+        
+        User updatedUser = service.getUserById(user.getUserId());
+        
+        assertEquals(newName, updatedUser.getUsername());
+        
+        updatedUser.setUsername(origName);
+        
+        assertTrue(service.updateUser(updatedUser));
+        
+        updatedUser = service.getUserById(user.getUserId());
+    }
     
     /**
      * @see Service#validateUser(country.demographics.forms.User) 
@@ -181,7 +210,7 @@ public class ServiceTest {
     public void test_validateUser() {
         User user = new User();
         user.setUsername("jim");
-        user.setPassword("a");
+        user.setPassword(" ");
         user = service.validateUser(user);
         
         assertNotNull(user);

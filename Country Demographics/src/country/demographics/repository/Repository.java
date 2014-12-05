@@ -4,6 +4,7 @@
  */
 package country.demographics.repository;
 
+import com.mysql.jdbc.StringUtils;
 import country.demographics.forms.Continent;
 import country.demographics.forms.Country;
 import country.demographics.forms.User;
@@ -21,7 +22,7 @@ import java.util.TimeZone;
 
 /**
  *
- * @author admin
+ * @author James Lexen
  */
 public class Repository {
 
@@ -68,10 +69,16 @@ public class Repository {
             PreparedStatement statement = connection.prepareStatement(sql);
             
             statement.setString(1, user.getUsername());
+            String actualPassword;
             
-            String encryptedPassword = Util.encrypt(user.getPassword());
+            if(!StringUtils.isEmptyOrWhitespaceOnly(user.getPassword())) {
+                actualPassword = Util.encrypt(user.getPassword());
+            } else {
+                actualPassword = "";
+            }
             
-            statement.setString(2, encryptedPassword);
+            
+            statement.setString(2, actualPassword);
             statement.setInt(3, user.getUserType());
             
             result = statement.executeUpdate();
@@ -349,10 +356,36 @@ public class Repository {
         return path;
     }
     
+        public User getUserById(final int userId) {
+        String sql = "SELECT username, user_type FROM users where uid=?";
+        
+        User user = null;
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()) {
+                user = new User();
+                user.setUserId(userId);
+                user.setUsername(resultSet.getString("username"));
+                user.setUserType(resultSet.getInt("user_type"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+        return user;
+    }
+        
+    
     public List<User> getUsers() {
         List<User> users = new ArrayList<User>();
         
-                String sql = "SELECT uid, username, user_type FROM users";
+        String sql = "SELECT uid, username, user_type FROM users";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -374,6 +407,8 @@ public class Repository {
         
         return users;
     }
+    
+
     
     public int insertContinent(final Continent continent) {
         String sql = "INSERT INTO continents (cont_name) VALUES (?)";
@@ -419,9 +454,14 @@ public class Repository {
             }
                 
             statement.setString(6, country.getCurrency());
-            statement.setString(7, country.getTLD());
+            
+            if(StringUtils.isEmptyOrWhitespaceOnly(country.getTLD())) {
+                statement.setString(7, country.getTLD());
+            } else {
+                statement.setString(7, country.getTLD().toLowerCase());
+            }            
+            
             statement.setInt(8, country.getContinentId());
-
             result = statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -473,7 +513,13 @@ public class Repository {
             statement.setString(4, country.getOfficialLanguage());
             statement.setString(5, country.getTimeZone().getID());
             statement.setString(6, country.getCurrency());
-            statement.setString(7, country.getTLD());
+            
+            if(StringUtils.isEmptyOrWhitespaceOnly(country.getTLD())) {
+                statement.setString(7, country.getTLD());
+            } else {
+                statement.setString(7, country.getTLD().toLowerCase());
+            }
+            
             statement.setInt(8, country.getContinentId());
             statement.setString(9, country.getFlag());  
             statement.setInt(10, country.getId());  
@@ -487,6 +533,39 @@ public class Repository {
 
         return result > 0;
     }
+    
+    public boolean updateUser(final User user) {
+        
+        String sql;
+        
+        if(StringUtils.isEmptyOrWhitespaceOnly(user.getPassword())) {
+            sql = "UPDATE users SET username=?, user_type=? WHERE uid=?";
+        } else {
+            sql = "UPDATE users SET username=?, user_type=?, password=? WHERE uid=?";
+        }
+        
+        int result = 0;
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            statement.setString(1, user.getUsername());
+            statement.setInt(2, user.getUserType());
+            
+            if(!StringUtils.isEmptyOrWhitespaceOnly(user.getPassword())) {      
+                statement.setString(3, Util.encrypt(user.getPassword()));
+                statement.setInt(4, user.getUserId());
+            } else {
+                statement.setInt(3, user.getUserId());
+            }
+            
+            result = statement.executeUpdate();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+        return result > 0;
+    }
 
     public User validatateUser(final User form) {
         User user = null;
@@ -494,12 +573,8 @@ public class Repository {
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            
-            
+                        
             String encrypted = Util.encrypt(form.getPassword());
-
-            
-          //  System.out.println(encrypted);
             
             statement.setString(1, form.getUsername());
             statement.setString(2, encrypted);
@@ -529,7 +604,6 @@ public class Repository {
 
             ResultSet resultSet = statement.executeQuery();
 
-            
             while(resultSet.next()) {
                 return resultSet.getInt("LAST_INSERT_ID()");
             }
@@ -538,9 +612,5 @@ public class Repository {
         }
         
         return -1;
-    }
-
-    public boolean updateUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet. TODO"); //To change body of generated methods, choose Tools | Templates.
     }
 }

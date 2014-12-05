@@ -22,25 +22,21 @@ import javafx.scene.control.TextField;
  */
 public class LoginController implements Initializable, ControlledScreen {
 
-    Service service;
-
-    ScreensController myController;
-
     @FXML
     TextField txtLogin;
     @FXML
     PasswordField pfPassword;
-    static final int zero = 0;
-
-    public static  User loggedUser = new User();
+    
+    private Service service;
+    private ScreensController myController;
+    public static User currentUser = new User();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        service = new Service();
-        
+        service = new Service();   
     }
 
     @Override
@@ -49,27 +45,18 @@ public class LoginController implements Initializable, ControlledScreen {
     }
 
     @FXML
-    public void toGoScreen2(ActionEvent e) {
-        //TODO verify with database, and push the information from a user.
-
+    public void goToMain(ActionEvent e) {
         User user = new User();
         user.setUsername(txtLogin.getText());
         user.setPassword(pfPassword.getText());
 
-        User globalUser = service.validateUser(user);
+        User retrievedUser = service.validateUser(user);
 
-        if (globalUser != null) {
-
+        if (retrievedUser != null) {
             myController.setScreen(CountryDemographics.screen2ID);
-            loggedUser = globalUser;
+            currentUser = retrievedUser;
             CountryDemographics.stage.setWidth(497 + 5);
             CountryDemographics.stage.setHeight(450);
-
         }
     }
-
-    public User getLoggedUser() {
-        return loggedUser;
-    }
-
 }

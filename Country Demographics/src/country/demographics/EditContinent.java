@@ -7,7 +7,6 @@ package country.demographics;
 
 import country.demographics.forms.Continent;
 import country.demographics.forms.Country;
-import country.demographics.service.Service;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,15 +16,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -34,36 +28,24 @@ import javafx.stage.Stage;
  */
 public class EditContinent implements Initializable, ControlledScreen {
 
-    ScreensController myController;
-
-    ObservableList<Continent> continents = FXCollections.observableArrayList();
-
     @FXML
     ChoiceBox cbContinent;
-
     @FXML
     TextField txtContinent;
-
-    Continent currentContinent = null;
-
     @FXML
     Button bntSave;
     @FXML
     Button bntDelete;
-    int count = 0;
+    
+    ScreensController myController;
+    ObservableList<Continent> continents = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        List<Continent> continentsList = CountryDemographics.service.getContinents();
-
-        for (Continent c : continentsList) {
-            continents.add(c);
-        }
-
-        cbContinent.setItems(continents);
+        refreshContinents();
 
         //Listener that observes the Continent Choice Box.
         //If it is changed, it will change the Country Choice Box too
@@ -71,13 +53,9 @@ public class EditContinent implements Initializable, ControlledScreen {
 
             @Override
             public void changed(ObservableValue<? extends Continent> ov, Continent t, Continent t1) {
-                currentContinent = t1;
                 if (t1 != null) {
                     txtContinent.setText(t1.getName());
-
-                } else {
-
-                }
+                } 
 
                 if (continents.isEmpty()) {
                     bntSave.setDisable(true);
@@ -86,12 +64,9 @@ public class EditContinent implements Initializable, ControlledScreen {
                 } else {
                     bntDelete.setDisable(false);
                     bntSave.setDisable(false);
-
                 }
-
             }
         });
-
     }
 
     @Override
@@ -103,46 +78,40 @@ public class EditContinent implements Initializable, ControlledScreen {
     @FXML
     public void toGoScreen2(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen2ID);
+        myController.getScreen(CountryDemographics.screen2ID);
         CountryDemographics.stage.setWidth(497 + 10);
         CountryDemographics.stage.setHeight(400);
-        refreshContinent();
-        txtContinent.clear();
+        refreshContinents();
     }
 
     @FXML
     public void saveChanges(ActionEvent e) {
         boolean hasContinent = false;
+        
+        // if we're saving something with the exact same name, don't need to do anything
+        if( ((Continent) cbContinent.getSelectionModel().getSelectedItem()).getName()
+                .equals(txtContinent.getText())) {
+            refreshContinents();
+            return;
+        }
 
         for (Continent c : continents) {
             if (c.getName().equals(txtContinent.getText())) {
                 hasContinent = true;
                 break;
-            } else {
-                hasContinent = false;
-            }
+            } 
         }
 
-        if (hasContinent) {
-            try {
-                ErroController.erro = "203: Continent already exists";
-                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(parent);
-                stage.setScene(scene);
-                stage.setTitle("Erro");
+        if (hasContinent ){            
+            ErrorMessage msg = new ErrorMessage("203: Continent already exists", this);
+            msg.show();
 
-                stage.show();
-                stage.setResizable(false);
-
-            } catch (Exception ex) {
-                System.out.println("Problem to open.");
-            }
         } else {
             Continent continentSelected = (Continent) cbContinent.getSelectionModel().getSelectedItem();
             continentSelected.setName(txtContinent.getText());
 
             CountryDemographics.service.updateContinent(continentSelected);
-            refreshContinent();
+            refreshContinents();
         }
 
     }
@@ -155,46 +124,30 @@ public class EditContinent implements Initializable, ControlledScreen {
             if (c.getName().equals("New Continent")) {
                 hasContinent = true;
                 break;
-            } else {
-                hasContinent = false;
-            }
+            } 
         }
 
         if (hasContinent) {
-            try {
-                ErroController.erro = "201: Continent already exists";
-                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(parent);
-                stage.setScene(scene);
-                stage.setTitle("Erro");
-
-                stage.show();
-                stage.setResizable(false);
-
-            } catch (Exception ex) {
-                System.out.println("Problem to open.");
-            }
+            ErrorMessage msg = new ErrorMessage("201: New Continent already exists", this);
+            msg.show();
+                    
         } else {
             Continent nContinent = new Continent();
             nContinent.setName("New Continent");
 
             CountryDemographics.service.addContinent(nContinent);
             continents.add(nContinent);
-            refreshContinent();
+            refreshContinents();
 
             for (Continent c : continents) {
                 if (c.getName().equals("New Continent")) {
                     cbContinent.getSelectionModel().select(c);
                 }
             }
-
         }
-        refreshContinent();
-
     }
 
-    private void refreshContinent() {
+    private void refreshContinents() {
         continents.clear();
         cbContinent.setItems(continents);
         List<Continent> continents1 = CountryDemographics.service.getContinents();
@@ -204,7 +157,7 @@ public class EditContinent implements Initializable, ControlledScreen {
         }
 
         cbContinent.setItems(continents);
-
+        txtContinent.clear();
     }
 
     @FXML
@@ -215,24 +168,11 @@ public class EditContinent implements Initializable, ControlledScreen {
         if (countriesByContinentId.isEmpty()) {
             continents.remove(selectedContinent);
             CountryDemographics.service.deleteContinentById(selectedContinent.getId());
-            refreshContinent();
-            txtContinent.clear();
+            refreshContinents();
         } else {
-            try {
-                ErroController.erro = "205: Can't delete Continent with registered Countries.";
-                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Erro.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(parent);
-                stage.setScene(scene);
-                stage.setTitle("Erro");
-
-                stage.show();
-                stage.setResizable(false);
-
-            } catch (Exception ex) {
-                System.out.println("Problem to open.");
-            }
+            ErrorMessage msg = new ErrorMessage("205: Can't delete Continent with registered Countries.", this);
+            msg.show();
+            
         }
     }
-
 }

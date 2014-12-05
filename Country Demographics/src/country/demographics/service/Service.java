@@ -20,11 +20,14 @@ import java.util.List;
 public class Service {
     private final Repository repository;
     
+    private static long lastContinentUpdate = -1;
+    
     /**
      * Constructor: Initializes the repository
      */
     public Service() {
         repository = new Repository();
+        lastContinentUpdate = System.currentTimeMillis();
         
         if(repository == null) {
             Util.log("Error Opening repository");
@@ -35,10 +38,16 @@ public class Service {
      * Adds a new continent
      * 
      * @param continent
-     * @return true if update successful, else false
+     * @return continent id of last added continent
      */
     public int addContinent(final Continent continent) {
-        return repository.insertContinent(continent);
+        int result = repository.insertContinent(continent);
+        
+        if(result > 0) {
+            lastContinentUpdate = System.currentTimeMillis();
+        }
+        
+        return result;
     }
     
     /**
@@ -68,7 +77,13 @@ public class Service {
      * @return True/False depending on success in repository
      */
     public boolean deleteContinentById(final int continentId) {
-        return repository.deleteContinentById(continentId);
+        boolean result = repository.deleteContinentById(continentId);
+
+        if(result) {
+            lastContinentUpdate = System.currentTimeMillis();
+        }
+        
+        return result;
     }
     
     /**
@@ -149,6 +164,10 @@ public class Service {
         return repository.getCountryById(id);
     }
     
+    public User getUserById(final int userId) {
+        return repository.getUserById(userId);
+    }
+    
     /**
      * Gets all Users
      * 
@@ -174,7 +193,13 @@ public class Service {
      * @return True/False depending on success in repository
      */
     public boolean updateContinent(final Continent continent) {
-        return repository.updateContinent(continent);
+        boolean result = repository.updateContinent(continent);
+        
+        if(result) {
+            lastContinentUpdate = System.currentTimeMillis();
+        }
+        
+        return result;
     }
     
     /**
@@ -187,7 +212,12 @@ public class Service {
         return repository.updateCountry(country);
     }
     
-    @Deprecated
+    /**
+     * Updates a User
+     * 
+     * @param user
+     * @return True/False depending on success in repository
+     */
     public boolean updateUser(final User user) {
         return repository.updateUser(user);
     }    
@@ -202,5 +232,9 @@ public class Service {
      */
     public User validateUser(User user) {
        return repository.validatateUser(user);
+    }
+    
+    public static boolean continentUpdatedRequired(final long myLastUpdate) {
+        return myLastUpdate < lastContinentUpdate;
     }
 }

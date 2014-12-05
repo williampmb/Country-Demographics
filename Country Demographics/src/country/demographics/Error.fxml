@@ -7,7 +7,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="141.0" prefWidth="319.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.ErroController">
+<AnchorPane id="AnchorPane" prefHeight="141.0" prefWidth="319.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="country.demographics.ErrorController">
   <children>
     <Pane prefHeight="141.0" prefWidth="257.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
@@ -16,7 +16,7 @@
             <Image url="@erro.jpg" />
           </image>
         </ImageView>
-        <Label fx:id="lErro" layoutX="124.0" layoutY="40.0" text="ErroMessage" />
+        <Label id="lErro" fx:id="lError" layoutX="124.0" layoutY="40.0" text="ErrorMessage" />
         <Button fx:id="btnClose" layoutX="135.0" layoutY="90.0" mnemonicParsing="false" onAction="#close" text="Close" />
       </children>
     </Pane>
