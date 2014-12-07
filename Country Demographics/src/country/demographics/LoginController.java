@@ -26,7 +26,7 @@ public class LoginController implements Initializable, ControlledScreen {
     TextField txtLogin;
     @FXML
     PasswordField pfPassword;
-    
+
     private Service service;
     private ScreensController myController;
     public static User currentUser = new User();
@@ -36,7 +36,7 @@ public class LoginController implements Initializable, ControlledScreen {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        service = new Service();   
+        service = new Service();
     }
 
     @Override
@@ -57,6 +57,13 @@ public class LoginController implements Initializable, ControlledScreen {
             currentUser = retrievedUser;
             CountryDemographics.stage.setWidth(497 + 5);
             CountryDemographics.stage.setHeight(450);
+            if (currentUser.getUserType() == 0) {
+                MainController.admin = false;
+
+            } else {
+                MainController.admin = true;
+
+            }
         }
     }
 }

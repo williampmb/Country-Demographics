@@ -69,13 +69,16 @@ public class MainController implements Initializable, ControlledScreen {
     ListView lvSearch;
     @FXML
     MenuItem miEditUser;
-        
+
+    static boolean admin = false;
+
     ScreensController myController;
     private static ObservableList<Country> countries = FXCollections.observableArrayList();
     private static ObservableList<Country> countriesByContinentIdObservable = FXCollections.observableArrayList();
     private ObservableList<Country> countriesSearch = FXCollections.observableArrayList();
     public static ObservableList<Continent> continents = FXCollections.observableArrayList();
     private long lastContinentUpdate = -1;
+
     /**
      * Initializes the controller class.
      */
@@ -135,7 +138,7 @@ public class MainController implements Initializable, ControlledScreen {
                 }
             }
         });
-        
+
         /**
          * Continent Change Listener
          */
@@ -151,8 +154,7 @@ public class MainController implements Initializable, ControlledScreen {
                     for (Country c : countriesByContinentIdList) {
                         countriesByContinentIdObservable.add(c);
                     }
-                    
-                    
+
                     if (countriesByContinentIdObservable.isEmpty()) {
                         cbCountry.setDisable(true);
                     } else {
@@ -167,13 +169,13 @@ public class MainController implements Initializable, ControlledScreen {
             }
         });
 
-       /**
-        * Country Change Listener
-        */
+        /**
+         * Country Change Listener
+         */
         cbCountry.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
 
             @Override
-            public void changed(ObservableValue<? extends Country> ov, 
+            public void changed(ObservableValue<? extends Country> ov,
                     Country oldCountry, Country newCountry) {
 
                 if (newCountry != null) {
@@ -204,29 +206,42 @@ public class MainController implements Initializable, ControlledScreen {
 
     @FXML
     public void toGoEditContinent(ActionEvent e) {
-        myController.setScreen(CountryDemographics.screen3ID);
-        
-        CountryDemographics.stage.setWidth(311 + 10);
-        CountryDemographics.stage.setHeight(200 + 40);
+        if (admin) {
 
-        clearScreen();
+            myController.setScreen(CountryDemographics.screen3ID);
+
+            CountryDemographics.stage.setWidth(311 + 10);
+            CountryDemographics.stage.setHeight(200 + 40);
+
+            clearScreen();
+        } else {
+            ErrorMessage error = new ErrorMessage("You are not admin", this);
+            error.show();
+
+        }
+
     }
-    
-    
+
     @FXML
     public void toGoEditCountry(ActionEvent e) {
-        myController.setScreen(CountryDemographics.screen4ID);
+        if (admin) {
+            myController.setScreen(CountryDemographics.screen4ID);
 
-        CountryDemographics.stage.setWidth(330 + 10);
-        CountryDemographics.stage.setHeight(590 + 40);
+            CountryDemographics.stage.setWidth(330 + 10);
+            CountryDemographics.stage.setHeight(590 + 40);
 
-        clearScreen();
+            clearScreen();
+        } else {
+            ErrorMessage error = new ErrorMessage("You are not admin", this);
+            error.show();
+        }
+
     }
 
     @FXML
     public void toGoEditUser(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen5ID);
-        
+
         CountryDemographics.stage.setWidth(330 + 10);
         CountryDemographics.stage.setHeight(250 + 40);
 
@@ -247,18 +262,17 @@ public class MainController implements Initializable, ControlledScreen {
         } catch (Exception ex) {
             System.out.println("Abriu About nao!");
         }
-        
+
         txtSearch.clear();
         lvSearch.setOpacity(0);
     }
-    
-        
+
     @FXML
     public void continentContextRequested() {
         // check if we need to update the continents
-        
+
         System.out.println("checking if we need to update....");
-        if(Service.continentUpdatedRequired(lastContinentUpdate)) {
+        if (Service.continentUpdatedRequired(lastContinentUpdate)) {
             refreshContinents();
         }
     }
@@ -270,7 +284,7 @@ public class MainController implements Initializable, ControlledScreen {
         lvSearch.setOpacity(0);
         clearCountryFields();
     }
-    
+
     private void clearCountryFields() {
         lbPop.setText("");
         lbArea.setText("");
@@ -280,7 +294,7 @@ public class MainController implements Initializable, ControlledScreen {
         lbTLD.setText("");
         displayFlag("");
     }
-    
+
     private void displayFlag(String path) {
         try {
             ivFlag.setImage(new Image(path));
@@ -303,7 +317,7 @@ public class MainController implements Initializable, ControlledScreen {
             }
         }
     }
-        
+
     public void refreshContinents() {
         continents.clear();
         List<Continent> currentContinents = CountryDemographics.service.getContinents();
@@ -314,7 +328,7 @@ public class MainController implements Initializable, ControlledScreen {
 
         cbContinent.setItems(continents);
         cbCountry.setDisable(true);
-        
+
         lastContinentUpdate = System.currentTimeMillis();
     }
 }

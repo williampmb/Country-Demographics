@@ -34,7 +34,7 @@
         <CheckBox fx:id="cebLvlUser" layoutX="188.0" layoutY="171.0" mnemonicParsing="false" text="Administrator" />
         <HBox alignment="CENTER_RIGHT" layoutX="29.0" layoutY="187.0" prefHeight="50.0" prefWidth="251.0" spacing="20.0">
           <children>
-            <Button id="btnNew" mnemonicParsing="false" onAction="#newUser" text="New" />
+            <Button id="btnNew" fx:id="btnNewUser" mnemonicParsing="false" onAction="#newUser" text="New" />
             <Button id="btnBack" mnemonicParsing="false" onAction="#saveChanges" text="Save" />
             <Button mnemonicParsing="false" onAction="#delete" text="Delete" />
             <Button id="btnSave" mnemonicParsing="false" onAction="#toGoScreen2" text="Back" />
