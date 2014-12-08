@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package country.demographics;
 
 import country.demographics.forms.Continent;
@@ -199,11 +194,19 @@ public class MainController implements Initializable, ControlledScreen {
         myController = screenPage;
     }
 
+    /**
+     * Handles closing the program
+     */
     @FXML
     public void exitProgram() {
         System.exit(0);
     }
 
+    /**
+     * Handles going to Edit Continent screen
+     * 
+     * @param e 
+     */
     @FXML
     public void toGoEditContinent(ActionEvent e) {
         if (admin) {
@@ -222,6 +225,11 @@ public class MainController implements Initializable, ControlledScreen {
 
     }
 
+    /**
+     * Handles going to Edit Country screen 
+     * 
+     * @param e 
+     */
     @FXML
     public void toGoEditCountry(ActionEvent e) {
         if (admin) {
@@ -238,6 +246,11 @@ public class MainController implements Initializable, ControlledScreen {
 
     }
 
+    /**
+     * Handles going to Edit User screen
+     * 
+     * @param e 
+     */
     @FXML
     public void toGoEditUser(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen5ID);
@@ -248,6 +261,11 @@ public class MainController implements Initializable, ControlledScreen {
         clearScreen();
     }
 
+    /**
+     * Opens About screen
+     * 
+     * @param e 
+     */
     @FXML
     public void openAbout(ActionEvent e) {
         try {
@@ -267,16 +285,19 @@ public class MainController implements Initializable, ControlledScreen {
         lvSearch.setOpacity(0);
     }
 
+    /**
+     * Responds to when user clicks the Continent combobox
+     */
     @FXML
     public void continentContextRequested() {
-        // check if we need to update the continents
-
-        System.out.println("checking if we need to update....");
         if (Service.continentUpdatedRequired(lastContinentUpdate)) {
             refreshContinents();
         }
     }
 
+    /**
+     * Rests the screen
+     */
     public void clearScreen() {
         cbCountry.getSelectionModel().clearSelection();
         cbContinent.getSelectionModel().clearSelection();
@@ -285,6 +306,9 @@ public class MainController implements Initializable, ControlledScreen {
         clearCountryFields();
     }
 
+    /**
+     * Resets all the fields
+     */
     private void clearCountryFields() {
         lbPop.setText("");
         lbArea.setText("");
@@ -295,6 +319,11 @@ public class MainController implements Initializable, ControlledScreen {
         displayFlag("");
     }
 
+    /**
+     * Displays the flag
+     * 
+     * @param path 
+     */
     private void displayFlag(String path) {
         try {
             ivFlag.setImage(new Image(path));
@@ -318,6 +347,9 @@ public class MainController implements Initializable, ControlledScreen {
         }
     }
 
+    /**
+     * Resets list of Continents
+     */
     public void refreshContinents() {
         continents.clear();
         List<Continent> currentContinents = CountryDemographics.service.getContinents();

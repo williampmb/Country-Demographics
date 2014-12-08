@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package country.demographics;
 
 import country.demographics.service.Service;
@@ -13,7 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
+ * Master Class for JavaFX screens
+ * 
  * @author williampmb
  */
 public class CountryDemographics extends Application {

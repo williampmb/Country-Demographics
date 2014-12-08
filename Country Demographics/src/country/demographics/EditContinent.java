@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package country.demographics;
 
 import country.demographics.forms.Continent;
@@ -22,7 +17,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 /**
- * FXML Controller class
+ * Controller Class for Edit Continent screen
  *
  * @author williampmb
  */
@@ -47,8 +42,11 @@ public class EditContinent implements Initializable, ControlledScreen {
     public void initialize(URL url, ResourceBundle rb) {
         refreshContinents();
 
-        //Listener that observes the Continent Choice Box.
-        //If it is changed, it will change the Country Choice Box too
+       
+        /**
+         * Listener that observes the Continent Choice Box.
+         * If it is changed, it will change the Country Choice Box too
+         */
         cbContinent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Continent>() {
 
             @Override
@@ -75,6 +73,11 @@ public class EditContinent implements Initializable, ControlledScreen {
 
     }
 
+    /**
+     * Handles going to the main screen. 
+     * 
+     * @param e 
+     */
     @FXML
     public void toGoScreen2(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen2ID);
@@ -84,6 +87,11 @@ public class EditContinent implements Initializable, ControlledScreen {
         refreshContinents();
     }
 
+    /**
+     * Handles saving changes. 
+     * 
+     * @param e 
+     */
     @FXML
     public void saveChanges(ActionEvent e) {
         boolean hasContinent = false;
@@ -116,6 +124,11 @@ public class EditContinent implements Initializable, ControlledScreen {
 
     }
 
+    /**
+     * Handles creating a new Continent
+     * 
+     * @param e 
+     */
     @FXML
     public void newContinent(ActionEvent e) {
         boolean hasContinent = false;
@@ -147,6 +160,9 @@ public class EditContinent implements Initializable, ControlledScreen {
         }
     }
 
+    /**
+     * Refreshes the list of Continents
+     */
     private void refreshContinents() {
         continents.clear();
         cbContinent.setItems(continents);
@@ -160,6 +176,11 @@ public class EditContinent implements Initializable, ControlledScreen {
         txtContinent.clear();
     }
 
+    /**
+     * Handles deleting a Continent
+     * 
+     * @param e 
+     */
     @FXML
     public void delete(ActionEvent e) {
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package country.demographics;
 
 import country.demographics.forms.Continent;
@@ -29,7 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 /**
- * FXML Controller class
+ * Controller Class for Edit Country screen. 
  *
  * @author williampmb
  */
@@ -199,6 +194,9 @@ public class EditCountry implements Initializable, ControlledScreen {
 
     }
     
+    /**
+     * Disables all fields
+     */
     private void disableFields() {
         txtCountry.setDisable(true);
         txtPop.setDisable(true);
@@ -210,6 +208,9 @@ public class EditCountry implements Initializable, ControlledScreen {
         txtPathFlag.setDisable(true);
     }
     
+    /**
+     * Enables all fields
+     */
     private void enableFields() {
         txtCountry.setDisable(false);
         txtPop.setDisable(false);
@@ -221,6 +222,11 @@ public class EditCountry implements Initializable, ControlledScreen {
         txtPathFlag.setDisable(false);
     }
 
+    /**
+     * Tries to display the flag
+     * 
+     * @param path 
+     */
     private void displayFlag(String path) {
 
         try {
@@ -233,14 +239,15 @@ public class EditCountry implements Initializable, ControlledScreen {
             //e.printStackTrace();
             if (path == null || path.equals("")) {
                 lbMessage.setVisible(false);
-            } else {
-                ivFlag.setVisible(true);
-            }
+            } 
 
             ivFlag.setVisible(false);
         }
     }
 
+    /**
+     * Clears all fields of their values
+     */
     private void clearFields() {
         txtCountry.setText("");
         txtPop.setText("");
@@ -258,6 +265,11 @@ public class EditCountry implements Initializable, ControlledScreen {
         myController = screenPage;
     }
 
+    /**
+     * Goes to Main Screen
+     * 
+     * @param e 
+     */
     @FXML
     public void toGoScreen2(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen2ID);
@@ -278,6 +290,11 @@ public class EditCountry implements Initializable, ControlledScreen {
         btnBrowse.setDisable(true);
     }
 
+    /**
+     * Handles browsing for the Flag image
+     * 
+     * @param e 
+     */
     @FXML
     public void browseFlag(ActionEvent e) {
 
@@ -301,7 +318,11 @@ public class EditCountry implements Initializable, ControlledScreen {
         }
     }
 
-    
+    /**
+     * Handles saving data to the database
+     * 
+     * @param e 
+     */
     @FXML
     public void saveChanges(ActionEvent e) {
         Continent selectedItem = (Continent) cbContinent.getSelectionModel().getSelectedItem();
@@ -344,6 +365,11 @@ public class EditCountry implements Initializable, ControlledScreen {
         }
     }
 
+    /**
+     * Handles creating a new Country 
+     * 
+     * @param e 
+     */
     @FXML
     public void newCountry(ActionEvent e) {
         Continent selectedContinent = (Continent) cbContinent.getSelectionModel().getSelectedItem();
@@ -393,6 +419,11 @@ public class EditCountry implements Initializable, ControlledScreen {
         }
     }
 
+    /**
+     * Handles deleting a Country
+     * 
+     * @param e 
+     */
     @FXML
     public void delete(ActionEvent e) {
 

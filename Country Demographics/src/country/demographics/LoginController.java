@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package country.demographics;
 
 import country.demographics.forms.User;
@@ -16,7 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
- * FXML Controller class
+ * Controller for Login screen
  *
  * @author williampmb
  */
@@ -44,6 +39,11 @@ public class LoginController implements Initializable, ControlledScreen {
         myController = screenPage;
     }
 
+    /**
+     * Handles going to the Main screen
+     * 
+     * @param e 
+     */
     @FXML
     public void goToMain(ActionEvent e) {
         User user = new User();

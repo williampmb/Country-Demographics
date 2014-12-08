@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package country.demographics;
 
 import country.demographics.forms.Continent;
@@ -16,7 +11,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,76 +19,53 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * Controller Class for Edit User screen
  *
  * @author williampmb
  */
 public class EditUser implements Initializable, ControlledScreen {
 
-    ScreensController myController;
-
-    ObservableList<User> users = FXCollections.observableArrayList();
-
     @FXML
     ChoiceBox cbUser;
-
     @FXML
     Button btnNewUser;
-
     @FXML
     TextField txtLogin;
-
     @FXML
     TextField txtNewPassword;
-
     @FXML
     TextField txtNewPassword2;
-
     @FXML
     PasswordField pfPassword;
-
     @FXML
     CheckBox cebLvlUser;
 
     User loggedUser;
-
     Continent currentContinent = null;
-
-    int count = 0;
+    ScreensController myController;
+    ObservableList<User> users = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /* List<User> userList = CountryDemographics.service.getUsers();
-
-         for (User c : userList) {
-         users.add(c);
-         }
-
-         cbUser.setItems(users);*/
-
+        
+        /**
+         * Handles when User combobox is clicked 
+         */
         cbUser.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent t) {
                 if (LoginController.currentUser != null) {
                     if (LoginController.currentUser.getUserType() == 0) {
-
-                        /* for (User u : users) {
-                         if (u.getUserId() == LoginController.currentUser.getUserId()) {
-                         loggedUser = u;
-                         break;
-                         }
-                         }*/
                         users.clear();
                         cbUser.setItems(users);
                         txtLogin.clear();
@@ -102,22 +73,20 @@ public class EditUser implements Initializable, ControlledScreen {
                         cbUser.setItems(users);
                         cebLvlUser.setDisable(true);
                         btnNewUser.setDisable(true);
-
-                        // cbUser.setDisable(true);
                     } else {
                         refreshUser();
-
                         cebLvlUser.setDisable(false);
-
                         cbUser.setDisable(false);
-
                     }
                 }
             }
         });
 
-        //Listener that observes the Continent Choice Box.
-        //If it is changed, it will change the Country Choice Box too
+        
+        /**
+         * Listener that observes the Continent Choice Box.
+         * If it is changed, it will change the Country Choice Box too
+         */
         cbUser.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
 
             @Override
@@ -131,19 +100,9 @@ public class EditUser implements Initializable, ControlledScreen {
                         cebLvlUser.setSelected(false);
 
                     }
-                    /* if(t1.getUserType() == 0){
-                     users.clear();
-                     cbUser.setItems(users);
-                     users.add(LoginController.loggedUser);
-                        
-                     }else{
-                     refreshUser();
-                     }*/
                 }
-
             }
         });
-
     }
 
     @Override
@@ -152,6 +111,11 @@ public class EditUser implements Initializable, ControlledScreen {
 
     }
 
+    /**
+     * Handles going to Main screen
+     * 
+     * @param e 
+     */
     @FXML
     public void toGoScreen2(ActionEvent e) {
         myController.setScreen(CountryDemographics.screen2ID);
@@ -160,47 +124,29 @@ public class EditUser implements Initializable, ControlledScreen {
         refreshUser();
     }
 
+    /**
+     * Handles saving changes to the database
+     * 
+     * @param e 
+     */
     @FXML
     public void saveChanges(ActionEvent e) {
         boolean hasUser = false;
-        boolean canChange = false;
+        boolean canChange = true;
 
         for (User u : users) {
             if (u.getUsername().equals(txtLogin.getText())) {
                 hasUser = true;
                 break;
-            } else {
-                hasUser = false;
-
-            }
+            } 
         }
-        
-        for (User u : users) {
-            if (u.getUsername().equals(txtLogin.getText())) {
-                canChange = false;
-                break;
-            } else {
-                canChange = true;
 
-            }
-        }
-        
-
-        if (hasUser && !canChange ) {
-            try {
-                ErrorController.error = "303: User already exists";
-                Parent parent = FXMLLoader.load(getClass().getResource("/country/demographics/Error.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(parent);
-                stage.setScene(scene);
-                stage.setTitle("Erro");
-
-                stage.show();
-                stage.setResizable(false);
-
-            } catch (Exception ex) {
-                System.out.println("Problem to open.");
-            }
+        if (hasUser &&!txtLogin.getText()
+                        .equals( ((User) cbUser.getSelectionModel().getSelectedItem()).getUsername())) {
+            
+            ErrorMessage msg = new ErrorMessage("303: User already exists", this);
+            msg.show();
+            
         } else {
             User userSelected = (User) cbUser.getSelectionModel().getSelectedItem();
             userSelected.setUsername(txtLogin.getText());
@@ -220,11 +166,13 @@ public class EditUser implements Initializable, ControlledScreen {
             CountryDemographics.service.updateUser(userSelected);
             refreshUser();
         }
-
-        //TODO 
-        // CountryDemographics.service.updateUser(userSelected);
     }
 
+    /**
+     * Handles creating a new User
+     * 
+     * @param e 
+     */
     @FXML
     public void newUser(ActionEvent e) {
         if (LoginController.currentUser.getUserType() == 0) {
@@ -266,6 +214,11 @@ public class EditUser implements Initializable, ControlledScreen {
         }
     }
 
+    /**
+     * Handles deleting a User
+     * 
+     * @param e 
+     */
     @FXML
     public void delete(ActionEvent e) {
         User selectedUser = (User) cbUser.getSelectionModel().getSelectedItem();
@@ -274,6 +227,9 @@ public class EditUser implements Initializable, ControlledScreen {
         refreshUser();
     }
 
+    /**
+     * Resets screen
+     */
     private void refreshUser() {
         users.clear();
         cbUser.setItems(users);

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package country.demographics;
 
 import java.io.IOException;
@@ -12,14 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
- * @author admin
+ * Error Message Class
+ * 
+ * @author jlexen
  */
 public class ErrorMessage {
     private Stage stage;
     
     public ErrorMessage(final String errorText, final Object theParent) {
-        
         try { 
             ErrorController.error = errorText;
             Parent parent = FXMLLoader.load(theParent.getClass().getResource("/country/demographics/Error.fxml"));
@@ -32,6 +27,9 @@ public class ErrorMessage {
         }        
     }
     
+    /**
+     * Shows error message
+     */
     public void show() {
         stage.show();
         stage.setResizable(false);
