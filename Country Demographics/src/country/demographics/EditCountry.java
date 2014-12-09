@@ -158,7 +158,6 @@ public class EditCountry implements Initializable, ControlledScreen {
 
             @Override
             public void changed(ObservableValue<? extends Country> ov, Country t, Country t1) {
-                System.out.println("country box changed...");
                 lastCountry = t;
                 if (t1 != null) {
                     currentCountry = t1;

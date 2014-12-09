@@ -132,7 +132,6 @@ public class EditUser implements Initializable, ControlledScreen {
     @FXML
     public void saveChanges(ActionEvent e) {
         boolean hasUser = false;
-        boolean canChange = true;
 
         for (User u : users) {
             if (u.getUsername().equals(txtLogin.getText())) {
@@ -153,8 +152,11 @@ public class EditUser implements Initializable, ControlledScreen {
             if (!txtNewPassword.getText().equals("")) {
                 if (txtNewPassword.getText().equals(txtNewPassword2.getText())) {
                     userSelected.setPassword(txtNewPassword.getText());
+                }else{
+                    ErrorMessage error = new ErrorMessage("The passwords don't match.", this);
+                    error.show();
                 }
-
+                
             }
             boolean selected = cebLvlUser.isSelected();
             if (selected) {
@@ -182,11 +184,8 @@ public class EditUser implements Initializable, ControlledScreen {
 
             for (User u : users) {
                 if (u.getUsername().equals("New User")) {
-                    hasUser = false;
-                } else {
                     hasUser = true;
-                    break;
-                }
+                } 
             }
 
             if (hasUser) {

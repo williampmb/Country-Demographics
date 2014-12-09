@@ -120,9 +120,10 @@
             <MenuItem mnemonicParsing="false" onAction="#toGoEditUser" text="Edit User" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" onAction="#openAbout" text="Help">
+        <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem mnemonicParsing="false" text="About" />
+            <MenuItem mnemonicParsing="false" onAction="#openAbout" text="About" />
+            <MenuItem mnemonicParsing="false" onAction="#openManual" text="Manual" />
           </items>
         </Menu>
       </menus>

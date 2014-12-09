@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<title>Country Demographics - User Manual</title>
+	<script>
+	
+		$(document).on('mouseenter', ".rounded-corners-small-no-show", function() { 
+			$(this).css( "background-color", "rgba(256, 256, 256, 0.6)");
+		}).on('mouseleave', ".rounded-corners-small-no-show", function() { 
+			$(this).css("background-color","");		
+		});
+	
+	</script>
+	<style> 
+		content {color: white}
+ 		p.thick { font-weight: bold;}
+		p.bodyText {
+			padding-top: 10px;
+			padding-right: 10px;
+			padding-bottom: 10px;
+			padding-left: 10px;	
+		}
+		
+		.rounded-corners-big {
+			border: 1px solid;
+			border-color: 207cca;
+			border-radius: 25px;		
+			background-color:rgba(255, 255, 255, 0.8)
+		}
+		
+		.rounded-corners-small-no-show {
+			border: 0px solid;
+			border-color: 207cca;
+			border-radius: 25px;		
+			background-color:rgba(255, 255, 255, 0.5)
+		}
+		
+		.title-text {
+			padding-top: 25px;
+			padding-right: 50px;
+			padding-bottom: 25px;
+			padding-left: 50px;			
+		}
+		
+		.body-text {
+			padding-top: 20px;
+			padding-right: 30px;
+			padding-bottom: 20px;
+			padding-left: 30px;			
+		}
+		
+		.black-gradient {
+			background: -moz-linear-gradient(top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+			background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+		}
+		
+		body {
+			font-family: "Trebuchet MS", Helvetica, sans-serif;
+			
+			background: rgb(88,190,221); /* Old browsers */
+			background: -moz-linear-gradient(top,  rgba(88,190,221,1) 0%, rgba(83,203,241,1) 60%, rgba(184,236,252,1) 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(88,190,221,1)), color-stop(60%,rgba(83,203,241,1)), color-stop(100%,rgba(184,236,252,1))); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top,  rgba(88,190,221,1) 0%,rgba(83,203,241,1) 60%,rgba(184,236,252,1) 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top,  rgba(88,190,221,1) 0%,rgba(83,203,241,1) 60%,rgba(184,236,252,1) 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top,  rgba(88,190,221,1) 0%,rgba(83,203,241,1) 60%,rgba(184,236,252,1) 100%); /* IE10+ */
+			background: linear-gradient(to bottom,  rgba(88,190,221,1) 0%,rgba(83,203,241,1) 60%,rgba(184,236,252,1) 100%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#58bedd', endColorstr='#b8ecfc',GradientType=0 ); /* IE6-9 */
+
+
+		}
+	</style>
+</head>
+
+<body background>
+	<header> 
+		<div class="rounded-corners-big">
+		<div class="title-text">
+		<h1>Country Demographics - User Manual</h1> 
+		<h3>Tables of Contents</h3>
+		<ol>
+			<p class="thick">Basic Functions</p> 
+			<ol>
+			<li><a href="#viewCountries">Viewing Countries</a></li>
+			<li><a href="#searching">Searching</a></li>
+			<li><a href="#changePassword">Change Your Passowrd</a></li>
+			</ol>
+			<p class="thick">Admin Functions</p> 
+			
+			<ol>
+				<li><a href="#editContinent">Edit Continent</a></li>
+				<li><a href="#createContinent">Create Continent</a></li>
+				<li><a href="#deleteContinent">Delete Continent</a></li>
+				<li><a href="#editCountry">Edit a Country</a></li>
+				<li><a href="#createCountry">Create a Country</a></li>
+				<li><a href="#deleteCountry">Delete a Country</a></li>
+				<li><a href="#editUser">Edit a User</a></li>
+				<li><a href="#createUser">Create a User</a></li>
+				<li><a href="#deleteUser">Delete a User</a></li>
+			</ol>
+		</ol>
+		</div>
+		</div>
+	</header>
+	<br>
+	<div>
+		<h2>Basic Functions</h2>
+		<h3 id="viewCountries">Viewing Countries</h3> 
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			To view a Country, click on the dropdown menu for Continents and select a Continent. 
+			Then, click on the list of Countries and select a Country that belongs to the above Continent. 
+		</p> 
+		</div>
+		<h3 id="searching">Searching For Countries</h3>
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			To search for a Country start typing the name of the Country in the Search box. Click the Country name
+			that you are searching as it appears in the dropdown menu. 
+		</p> 
+		</div>
+		<h3 id="changePassword">Change Your Password</h3>
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			To change your password, go to 'Edit' -> 'Edit User'. Select your user name, type your new password in both 
+			password boxes and click 'Save'. The next time you log in you will use that password. Click 'Back' to return
+			 to the main screen. 
+		</p> 
+		</div>
+		<h2>Admin Functions</h2>
+		<h3 id="editContinent">Edit a Continent</h3>
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			To edit a Continent, go to 'Edit' -> 'Edit Continent'. Select a Continent from the dropdown menu, edit its name 
+			and click 'Save'. Click 'Back' to return to the main screen. 
+		</p>
+		</div>
+		<h3 id="createContinent">Create a Continent</h3>
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			To create a Continent, go to 'Edit' -> 'Edit Continent'. Click the 'New' button. A new Continent will appear in the 
+			Continent list. The default name is 'New Continent', select it and <a href="#editContinent">edit</a> it to change the name. 
+		</p>
+		</div>
+		<h3 id="deleteContinent">Delete a Continent</h3>
+		<div class="rounded-corners-small-no-show"> 	
+		<p class="bodyText">
+			To delete a Continent, go to 'Edit' -> 'Edit Continent'. Select a Continent from the dropdown menu and click the 
+			'delete' button. If the Continent does not contain any Countries, it will be delete. If it does contain at least 
+			one Country, it will display an error message, and the Continent will not delete. Click 'Back' to return to the main screen. 
+		</p>
+		</div>
+		<h3 id="editCountry">Edit a Country</h3>
+		<div class="rounded-corners-small-no-show"> 	
+		<p class="bodyText">
+			To edit a Country, go to 'Edit' -> 'Edit Country'. Select a Continent from the first dropdown menu. Then, select a 
+			Country from the second dropdown menu. Edit any of the text fields. To change the photo, click the 'Browse button and
+			browse for an image file and open it. Click 'Save' to save your changes. Click the 'Back' button to return to the home screen. 
+		</p>
+		</div>
+		<h3 id="createCountry">Create a Country</h3>
+		<div class="rounded-corners-small-no-show"> 	
+		<p class="bodyText">
+			To create a Country, go to 'Edit' -> 'Edit Country'. Select a Continent from the first dropdown menu. Then, click the
+			'New' button. A new Country with the name 'New Country' will be created in the dropdown list of Countries. Click the 'Back' 
+			button to return to the home screen. 
+		</p> 
+		</div>
+		<h3 id="deleteCountry">Delete a Country</h3>
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			To delete a Country, go to 'Edit' -> 'Edit Country'. Select a Continent from the first dropdown menu. Then, select a 
+			Country from the second dropdown menu. Click the 'Delete' button, and the Country will be deleted. Click the 'Back' button 
+			to return to the home screen. 
+		</p> 
+		</div>
+		<h3 id="editUser">Edit a User</h3>
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			** As an admin, it is possible to edit any user's password, username and user type. ** <br>
+			To edit a User, go to 'Edit' -> 'Edit User'. Select a User from the dropdown menu. Edit any of the values and and click 
+			'Save'. Any changes will come into affect the next time a user logs in. Click the 'Back' button to return to the home screen. 
+		</p> 
+		</div>
+		<h3 id="createUser">Create a User</h3>
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			To create a User, go to 'Edit' -> 'Edit User'. Click the 'New' button. A new User will be created with the name 'New User'. You
+			can now select that user in the User dropdown menu. 
+		</p> 
+		</div>
+		<h3 id="deleteUser">Delete a User</h3>
+		<div class="rounded-corners-small-no-show">
+		<p class="bodyText">
+			To delete a User, go to 'Edit' -> 'Edit User'. Click the 'Delete' button. You cannot delete the User currently logged in. 
+		</p> 
+		</div>
+	</div>
+</body>
+</html>
