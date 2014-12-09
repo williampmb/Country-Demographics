@@ -22,15 +22,14 @@ CREATE TABLE IF NOT EXISTS `continents` (
   `cont_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cont_name` varchar(50) DEFAULT '0',
   KEY `cont_id` (`cont_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
--- Dumping data for table demographics.continents: ~3 rows (approximately)
+-- Dumping data for table demographics.continents: ~2 rows (approximately)
 DELETE FROM `continents`;
 /*!40000 ALTER TABLE `continents` DISABLE KEYS */;
 INSERT INTO `continents` (`cont_id`, `cont_name`) VALUES
 	(1, 'South America'),
-	(2, 'North America'),
-	(3, 'new cont');
+	(2, 'North America');
 /*!40000 ALTER TABLE `continents` ENABLE KEYS */;
 
 
@@ -46,36 +45,22 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `count_currency` varchar(50) DEFAULT NULL,
   `count_tld` varchar(10) DEFAULT NULL,
   `cont_id` int(10) unsigned NOT NULL,
-  `flag_id` int(10) unsigned DEFAULT NULL,
-  KEY `count_id` (`count_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+  `count_flag` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`count_id`),
+  KEY `count_id` (`count_id`),
+  KEY `cont_id` (`cont_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
--- Dumping data for table demographics.countries: ~7 rows (approximately)
+-- Dumping data for table demographics.countries: ~5 rows (approximately)
 DELETE FROM `countries`;
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
-INSERT INTO `countries` (`count_id`, `count_name`, `count_pop`, `count_area`, `count_language`, `count_timezone`, `count_currency`, `count_tld`, `cont_id`, `flag_id`) VALUES
-	(1, 'Brazil', 202656788, 8515767, 'Portuguese', 'BRT (UTC−2 to −5)', 'Real', '.br', 1, 1),
-	(2, 'United States', 318968000, 9629091, 'English', 'Central', 'Dollar', '.us', 2, 1),
-	(3, 'Argentina', 42669500, 2780400, 'Spanish', ' 	ART (UTC−3)', 'Peso ($) (ARS)', '.ar', 1, 1),
-	(4, 'Canada', 35540419, 9984670, 'English/French', '(UTC−3.5 to −8)', 'Canadian dollar', '.ca', 2, 1),
-	(5, 'Mexico', 118395054, 1972550, 'Spanish', '(UTC−8 to −6)', 'Peso (MXN)', '.mx', 1, 1);
+INSERT INTO `countries` (`count_id`, `count_name`, `count_pop`, `count_area`, `count_language`, `count_timezone`, `count_currency`, `count_tld`, `cont_id`, `count_flag`) VALUES
+	(1, 'Brazil', 202656788, 6553, 'Portuguese', 'GMT', 'Real', '.br', 1, 'file:/C:/Users/admin/Documents/countrydemos/Country-Demographics/Country%20Demographics/src/country/demographics/flags/Brazil.png'),
+	(2, 'United States', 318968000, 9629091, 'English', 'GMT', 'Dollar', '.us', 2, 'file:/C:/Users/admin/Documents/countrydemos/Country-Demographics/Country%20Demographics/src/country/demographics/flags/United-States-of-America(USA).png'),
+	(3, 'Argentina', 42669500, 2780400, 'Spanish', 'GMT', 'Peso ($) (ARS)', '.ar', 1, 'file:/C:/Users/admin/Documents/countrydemos/Country-Demographics/Country%20Demographics/src/country/demographics/flags/Argentina.png'),
+	(4, 'Canada', 35540419, 9984670, 'English/French', 'GMT', 'Canadian dollar', '.ca', 2, 'file:/C:/Users/admin/Documents/countrydemos/Country-Demographics/Country%20Demographics/src/country/demographics/flags/Canada.png'),
+	(5, 'Mexico', 118395054, 1972550, 'Spanish', 'GMT', 'Peso (MXN)', '.mx', 1, 'file:/C:/Users/admin/Documents/countrydemos/Country-Demographics/Country%20Demographics/src/country/demographics/flags/Mexico.png');
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
-
-
--- Dumping structure for table demographics.flags
-DROP TABLE IF EXISTS `flags`;
-CREATE TABLE IF NOT EXISTS `flags` (
-  `flag_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `flag_path` varchar(100) NOT NULL DEFAULT '0',
-  KEY `flag_id` (`flag_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- Dumping data for table demographics.flags: ~1 rows (approximately)
-DELETE FROM `flags`;
-/*!40000 ALTER TABLE `flags` DISABLE KEYS */;
-INSERT INTO `flags` (`flag_id`, `flag_path`) VALUES
-	(1, 'country/demographics/flags/United-States-of-America(USA).png');
-/*!40000 ALTER TABLE `flags` ENABLE KEYS */;
 
 
 -- Dumping structure for table demographics.users
@@ -86,15 +71,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(50) DEFAULT NULL,
   `user_type` int(11) NOT NULL,
   KEY `uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
--- Dumping data for table demographics.users: ~3 rows (approximately)
+-- Dumping data for table demographics.users: ~4 rows (approximately)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`uid`, `username`, `password`, `user_type`) VALUES
-	(1, 'william', 'braziliscool', 0),
-	(2, 'jim', 'usaisbetter', 0),
-	(3, 'simpleuser', 'password', 1);
+	(1, 'william', 'NCMuZN6fMCEM1ZngF9aaGg==', 1),
+	(2, 'jim', 'f8kzbjD21P4xNxDn/9RG9Q==', 1),
+	(3, 'simpleuser', 'f8kzbjD21P4xNxDn/9RG9Q==', 0),
+	(15, 'bob', 'uRxjOsrPOiAeEx9D24BKfw==', 0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

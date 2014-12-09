@@ -1,10 +1,10 @@
 package country.demographics.forms;
 
 import java.util.TimeZone;
-import javafx.scene.image.Image;
 
 /**
- *
+ * Country Class
+ * 
  * @author Jim Lexen
  */
 public class Country {

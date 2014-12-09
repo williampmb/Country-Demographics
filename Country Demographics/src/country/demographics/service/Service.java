@@ -234,6 +234,12 @@ public class Service {
        return repository.validatateUser(user);
     }
     
+    /**
+     * Determines if Controller needs to update its Continent list
+     * 
+     * @param myLastUpdate
+     * @return 
+     */
     public static boolean continentUpdatedRequired(final long myLastUpdate) {
         return myLastUpdate < lastContinentUpdate;
     }

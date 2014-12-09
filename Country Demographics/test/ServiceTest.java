@@ -13,10 +13,8 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * JUnit Test
+ * JUnit test suite for Service
  * 
- * NOTE: This is really bad to do tests on an our actual database. This isn't
- *  permanent. In the future there will be a mock database. 
  * 
  * @author admin
  */

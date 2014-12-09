@@ -26,6 +26,13 @@ public class Util {
     private static String encryptionKey = "V$D!%f|o!#zWnwé"; 
     private static int pwSize = 16;
     
+    /**
+     * Encrypts password. 
+     * 
+     * @param plainText
+     * @return
+     * @throws Exception 
+     */
     public static String encrypt(String plainText) throws Exception {
         
         if(plainText.length() < pwSize) {
@@ -38,6 +45,13 @@ public class Util {
         return Base64.getEncoder().encodeToString(cipher.doFinal(plainText.getBytes("UTF-8")));
     }
  
+    /**
+     * Decrypts a password
+     * 
+     * @param cipherString
+     * @return
+     * @throws Exception 
+     */
     public static String decrypt(String cipherString) throws Exception{
         
         byte[] cipherBytes = Base64.getDecoder().decode(cipherString);

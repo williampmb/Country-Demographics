@@ -91,6 +91,12 @@ public class Repository {
         
     }
     
+    /**
+     * Deletes a Country by its ID
+     * 
+     * @param continentId
+     * @return True/False
+     */
     public boolean deleteContinentById(final int continentId) {
         String sql = "DELETE FROM continents WHERE cont_id=?";
         
@@ -136,6 +142,12 @@ public class Repository {
         return result > 0;
     }
     
+    /**
+     * Deletes a User by its ID
+     * 
+     * @param userId
+     * @return True/False
+     */
     public boolean deleteUserById(final int userId) {
         String sql = "DELETE FROM users WHERE uid=?";
         
@@ -154,6 +166,12 @@ public class Repository {
         return result > 0; 
     }
     
+    /**
+     * Gets a Continent by its Id
+     * 
+     * @param id
+     * @return Continent object or null if an error ocurs.
+     */
     public Continent getContinentById(final int id) {
         String sql = "SELECT * FROM continents WHERE cont_id=?";
         
@@ -177,6 +195,11 @@ public class Repository {
         return null;
     }
 
+    /**
+     * Gets all Continents
+     * 
+     * @return 
+     */
     public List<Continent> getContinents() {
         List<Continent> continents = new ArrayList<>();
 
@@ -201,6 +224,11 @@ public class Repository {
         return continents;
     }
     
+    /**
+     * Gets all Countries
+     * 
+     * @return 
+     */
     public List<Country> getCountries() {
         List<Country> countryList = new ArrayList<>();
 
@@ -233,6 +261,12 @@ public class Repository {
         return countryList;
     }
 
+    /**
+     * Gets a list of Countries for a specific Continent
+     * 
+     * @param continentId
+     * @return 
+     */
     public List<Country> getCountriesByContinentId(final int continentId) {
         List<Country> countryList = new ArrayList<>();
 
@@ -266,6 +300,12 @@ public class Repository {
         return countryList;
     } 
     
+    /**
+     * Function for searching for Countries by name
+     * 
+     * @param searchText
+     * @return 
+     */
     public List<Country> getCountriesBySearchText(final String searchText) {
         List<Country> countryList = new ArrayList<>();
         
@@ -299,6 +339,12 @@ public class Repository {
         return countryList;
     }
     
+    /**
+     * Gest a Country by its ID
+     * 
+     * @param id
+     * @return Country object or null if there is an error
+     */
     public Country getCountryById(final int id) {
         
         String sql = "SELECT * FROM countries WHERE count_id=?"; 
@@ -332,6 +378,12 @@ public class Repository {
         return null;
     }
 
+    /**
+     * Gets a Country's flag path
+     * 
+     * @param countryId
+     * @return 
+     */
     public String getFlagByCountryId(final int countryId) {
         String sql = "SELECT flag_path FROM flags INNER JOIN countries "
                 + "WHERE flags.flag_id = countries.flag_id AND countries.count_id = ?";
@@ -381,7 +433,12 @@ public class Repository {
         return user;
     }
         
-    
+    /**
+     * Gets list of all Users
+     * Objects do not contain passwords
+     * 
+     * @return 
+     */
     public List<User> getUsers() {
         List<User> users = new ArrayList<User>();
         
@@ -408,8 +465,12 @@ public class Repository {
         return users;
     }
     
-
-    
+    /**
+     * Inserts a Continent
+     * 
+     * @param continent
+     * @return ID of recently inserted Continent
+     */
     public int insertContinent(final Continent continent) {
         String sql = "INSERT INTO continents (cont_name) VALUES (?)";
         
@@ -433,6 +494,12 @@ public class Repository {
         }
     }
 
+    /**
+     * INserts a Country
+     * 
+     * @param country
+     * @return Country object inserted with its newly created ID or null
+     */
     public Country insertCountry(final Country country) {
         String sql = "INSERT INTO countries (count_name, count_pop, count_area, "
                 + "count_language, count_timezone, count_currency, count_tld, cont_id) "
@@ -475,7 +542,14 @@ public class Repository {
         
         return null;
     }
-    
+
+    /**
+     * Updates a Continent. 
+     * Assumes Continent has been created. 
+     * 
+     * @param continent
+     * @return 
+     */
     public boolean updateContinent(final Continent continent) {
         
         String sql = "UPDATE continents SET cont_name = ? WHERE cont_id = ?";
@@ -496,6 +570,13 @@ public class Repository {
         return result > 0;
     }
     
+    /**
+     * Updates a Country.
+     * Assumes Country has been created. 
+     * 
+     * @param country
+     * @return 
+     */
     public boolean updateCountry(final Country country) {
                 
         String sql = "UPDATE countries SET count_name=?, count_pop=?, count_area=?, "
@@ -534,6 +615,13 @@ public class Repository {
         return result > 0;
     }
     
+    /**
+     * Updates a User
+     * Assumes the User has been created
+     * 
+     * @param user
+     * @return 
+     */
     public boolean updateUser(final User user) {
         
         String sql;
@@ -567,6 +655,12 @@ public class Repository {
         return result > 0;
     }
 
+    /**
+     * Validates a User with a given username and password
+     * 
+     * @param form
+     * @return 
+     */
     public User validatateUser(final User form) {
         User user = null;
         String sql = "SELECT uid, username, user_type FROM users WHERE BINARY username=? and BINARY password=? LIMIT 0, 1";
@@ -596,6 +690,11 @@ public class Repository {
         return user;
     }
 
+    /**
+     * Gets last ID updated in database
+     * 
+     * @return 
+     */
     public int getLastId() {
         String sql = "SELECT LAST_INSERT_ID()";
         

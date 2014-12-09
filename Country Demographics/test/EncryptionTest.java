@@ -24,7 +24,7 @@ public class EncryptionTest {
         String origC = "oooohyeah&^^%";
         String origD = "!!!!!!!!!!!!!!";
         String origE = "++++++++++++";
-        String origF = "ah herro egroll";
+        String origF = "ah herro dfs";
         String origG = "lolasdfjfkjdf";
         String origH = "***&&)@#$)(";
         
